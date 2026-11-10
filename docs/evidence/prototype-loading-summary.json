@@ -1,0 +1,270 @@
+{
+  "scope": "C++ prototype evidence, not Rust performance",
+  "source": "phase2/loading/results/analysis.json",
+  "source_sha256": "377d0ad913667d4cfc2ba66f63e17319092dd7798917e696b61c0a2e08c2cb24",
+  "runtime": {
+    "rows": [
+      {
+        "name": "r1_base",
+        "tokens": 256,
+        "tokens_s": 10.3,
+        "wait_ms": 49.52,
+        "direct": 0,
+        "fallback": 0,
+        "errors": 0,
+        "actual_read_bytes": 42469842944,
+        "decode_read_bytes": 25939955712,
+        "exact_logits_and_tokens": true
+      },
+      {
+        "name": "r1_scatter",
+        "tokens": 256,
+        "tokens_s": 11.65,
+        "wait_ms": 42.51,
+        "direct": 17716,
+        "fallback": 0,
+        "errors": 0,
+        "actual_read_bytes": 42469842944,
+        "decode_read_bytes": 25939955712,
+        "exact_logits_and_tokens": true
+      },
+      {
+        "name": "r2_base",
+        "tokens": 256,
+        "tokens_s": 11.4,
+        "wait_ms": 43.36,
+        "direct": 0,
+        "fallback": 0,
+        "errors": 0,
+        "actual_read_bytes": 42469842944,
+        "decode_read_bytes": 25939955712,
+        "exact_logits_and_tokens": true
+      },
+      {
+        "name": "r2_scatter",
+        "tokens": 256,
+        "tokens_s": 12.69,
+        "wait_ms": 36.83,
+        "direct": 17716,
+        "fallback": 0,
+        "errors": 0,
+        "actual_read_bytes": 42469842944,
+        "decode_read_bytes": 25939955712,
+        "exact_logits_and_tokens": true
+      },
+      {
+        "name": "r3_base",
+        "tokens": 256,
+        "tokens_s": 12.41,
+        "wait_ms": 37.81,
+        "direct": 0,
+        "fallback": 0,
+        "errors": 0,
+        "actual_read_bytes": 42469842944,
+        "decode_read_bytes": 25939955712,
+        "exact_logits_and_tokens": true
+      },
+      {
+        "name": "r3_scatter",
+        "tokens": 256,
+        "tokens_s": 11.57,
+        "wait_ms": 43.02,
+        "direct": 17716,
+        "fallback": 0,
+        "errors": 0,
+        "actual_read_bytes": 42469842944,
+        "decode_read_bytes": 25939955712,
+        "exact_logits_and_tokens": true
+      }
+    ],
+    "paired_throughput_gain_pct": [
+      13.10679611650485,
+      11.315789473684212,
+      -6.768734891216754
+    ],
+    "median_gain_pct": 11.315789473684212,
+    "baseline_tps_median": 11.4,
+    "scatter_tps_median": 11.65,
+    "baseline_wait_ms_median": 43.36,
+    "scatter_wait_ms_median": 42.51,
+    "exact_outputs_all": true,
+    "scope": "Qwen, no pruning, 50% cache, 4 prompts x 64 tokens, 3 pairs",
+    "precision": "Driver throughput rounded to 0.01 token/s; small differences are descriptive only."
+  },
+  "deadline_trials": {
+    "source_sha256": "0209526542f80821597403f33c37348cdb9887ca31a3eb89985774616c75c089",
+    "rows": [
+      {
+        "jobs": 1,
+        "threads": 2,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 2.8284965,
+        "maximum_request_ready_ms": 3.467559,
+        "missed_10ms": 0,
+        "expert_requests": 20
+      },
+      {
+        "jobs": 1,
+        "threads": 2,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 2.292242,
+        "maximum_request_ready_ms": 2.851688,
+        "missed_10ms": 0,
+        "expert_requests": 20
+      },
+      {
+        "jobs": 1,
+        "threads": 4,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 2.979496,
+        "maximum_request_ready_ms": 3.392696,
+        "missed_10ms": 0,
+        "expert_requests": 20
+      },
+      {
+        "jobs": 1,
+        "threads": 4,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 2.3799775,
+        "maximum_request_ready_ms": 2.624153,
+        "missed_10ms": 0,
+        "expert_requests": 20
+      },
+      {
+        "jobs": 2,
+        "threads": 2,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 5.1027070000000005,
+        "maximum_request_ready_ms": 6.532095,
+        "missed_10ms": 0,
+        "expert_requests": 40
+      },
+      {
+        "jobs": 2,
+        "threads": 2,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 4.191781,
+        "maximum_request_ready_ms": 5.661986,
+        "missed_10ms": 0,
+        "expert_requests": 40
+      },
+      {
+        "jobs": 2,
+        "threads": 4,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 4.881683,
+        "maximum_request_ready_ms": 6.107568,
+        "missed_10ms": 0,
+        "expert_requests": 40
+      },
+      {
+        "jobs": 2,
+        "threads": 4,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 4.202341,
+        "maximum_request_ready_ms": 4.807892,
+        "missed_10ms": 0,
+        "expert_requests": 40
+      },
+      {
+        "jobs": 4,
+        "threads": 2,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 9.5550635,
+        "maximum_request_ready_ms": 11.212787,
+        "missed_10ms": 10,
+        "expert_requests": 80
+      },
+      {
+        "jobs": 4,
+        "threads": 2,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 8.301002,
+        "maximum_request_ready_ms": 8.776105,
+        "missed_10ms": 0,
+        "expert_requests": 80
+      },
+      {
+        "jobs": 4,
+        "threads": 4,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 9.1749525,
+        "maximum_request_ready_ms": 11.340402,
+        "missed_10ms": 6,
+        "expert_requests": 80
+      },
+      {
+        "jobs": 4,
+        "threads": 4,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 8.201754,
+        "maximum_request_ready_ms": 9.429912,
+        "missed_10ms": 0,
+        "expert_requests": 80
+      },
+      {
+        "jobs": 8,
+        "threads": 2,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 16.7230205,
+        "maximum_request_ready_ms": 22.315397,
+        "missed_10ms": 89,
+        "expert_requests": 160
+      },
+      {
+        "jobs": 8,
+        "threads": 2,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 15.9080145,
+        "maximum_request_ready_ms": 17.096771,
+        "missed_10ms": 74,
+        "expert_requests": 160
+      },
+      {
+        "jobs": 8,
+        "threads": 4,
+        "scatter": false,
+        "repetitions": 20,
+        "median_wave_ready_ms": 17.1200355,
+        "maximum_request_ready_ms": 18.090897,
+        "missed_10ms": 88,
+        "expert_requests": 160
+      },
+      {
+        "jobs": 8,
+        "threads": 4,
+        "scatter": true,
+        "repetitions": 20,
+        "median_wave_ready_ms": 15.444415500000002,
+        "maximum_request_ready_ms": 16.561013,
+        "missed_10ms": 83,
+        "expert_requests": 160
+      }
+    ],
+    "target": "expert request to ready, including waiting for a worker, <=10ms",
+    "inference_measured": false,
+    "strict_future_maximum_guaranteed": false,
+    "limitations": [
+      "20 repeated waves per configuration, not a guarantee against future OS/SSD stalls.",
+      "Synthetic expert geometry, no Dots3 weights or GPU compute.",
+      "No older background requests ahead of the wave; these could add delay.",
+      "Pinned destination slots are preallocated; I/O workers pinned to CPUs 6,7,8,9.",
+      "Qwen service running after restoration; no imposed inference load."
+    ]
+  },
+  "synthetic_geometry_bytes": 12533760
+}

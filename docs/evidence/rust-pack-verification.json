@@ -1,0 +1,133 @@
+{
+  "model": "Qwen3.8-Flash-Next UD-IQ4_XS existing expert pack",
+  "distinct_layouts": 3,
+  "checks": 18,
+  "gpu_inference": false,
+  "index_sha256": "ad315b60a6bf883f5d7551401d2ee88b2ebe73d582debcfd8e7dc3387b0dacf6",
+  "binary_sha256": "9581ce55d4688c3d2af6621d4273b32d2c3acd89dff8910753472cdbb82aab26",
+  "sources_sha256": {
+    "crates/juqe-core/Cargo.toml": "47d92fcccb8d431df6f4870cae101ceb1383b28dcf01b56b1af385556e5359b5",
+    "crates/juqe-io/Cargo.toml": "aed9a98358be97a0cfe00e12d63a9564fd6f60b55f6f2a82c8eabe276e6a5035",
+    "crates/juqe-cli/Cargo.toml": "0a49a65b674a2db0cca69ed3e75d6b9cbd91b684fc427a689fc49bef0b8c4831",
+    "crates/juqe-core/src/cache.rs": "ed9ec0522634867700b7499e516f6336885c37a5633603e89b5bd65d39c14b0d",
+    "crates/juqe-core/src/lib.rs": "56d84a65e4dd199a35440f2aae1b10946e64961534454ede54586bfb701c9d65",
+    "crates/juqe-core/src/format.rs": "30a569dd60b268561e8a12b4a371cd8bfae4a6e5f102b9955d53c624465e9349",
+    "crates/juqe-core/tests/invariants.rs": "2572847c112d758d2808b40066effce53da8179ebc6024766a8d0a46a2d11760",
+    "crates/juqe-io/src/lib.rs": "55057b4dc8474118d938c04631853074b18290682f7fe1d289080322f90da943",
+    "crates/juqe-io/src/buffer.rs": "84575f4c3f6088a2a3d88a35aa561928e0feb702c3f71c7bb897ac8d4180e43b",
+    "crates/juqe-io/src/linux.rs": "d1e218ba65f38d4b43976d5c18a212e0dc8fa3e4a6e104814d8f8b4d85eeda8d",
+    "crates/juqe-io/tests/reads.rs": "45ad12cc89c122ad16e0a4a3cb13e299ef1fc9b88529c3cd29b623ba40e6ede9",
+    "crates/juqe-cli/src/main.rs": "88cd2d8c319069d66d92811f6b8483f0ef3f24481ffa8ef6554ccb3cfd408c2d",
+    "crates/juqe-cli/tests/command.rs": "274528d9e6ab9b99f16010056f41d86efb83773d9de4b8f360c692f2f9683f56"
+  },
+  "results": [
+    {
+      "layer": 0,
+      "expert": 0,
+      "direct": false,
+      "result": "verified=true layer=0 expert=0 path=BufferedStaging fallback=None bytes_read=2330624 queue_ms=0.000 service_ms=0.172 request_ready_ms=0.172"
+    },
+    {
+      "layer": 0,
+      "expert": 0,
+      "direct": true,
+      "result": "verified=true layer=0 expert=0 path=DirectScatter fallback=None bytes_read=2330624 queue_ms=0.000 service_ms=0.771 request_ready_ms=0.771"
+    },
+    {
+      "layer": 0,
+      "expert": 256,
+      "direct": false,
+      "result": "verified=true layer=0 expert=256 path=BufferedStaging fallback=None bytes_read=2330624 queue_ms=0.000 service_ms=0.183 request_ready_ms=0.183"
+    },
+    {
+      "layer": 0,
+      "expert": 256,
+      "direct": true,
+      "result": "verified=true layer=0 expert=256 path=DirectScatter fallback=None bytes_read=2330624 queue_ms=0.000 service_ms=0.867 request_ready_ms=0.867"
+    },
+    {
+      "layer": 0,
+      "expert": 511,
+      "direct": false,
+      "result": "verified=true layer=0 expert=511 path=BufferedStaging fallback=None bytes_read=2330624 queue_ms=0.000 service_ms=0.146 request_ready_ms=0.146"
+    },
+    {
+      "layer": 0,
+      "expert": 511,
+      "direct": true,
+      "result": "verified=true layer=0 expert=511 path=DirectScatter fallback=None bytes_read=2330624 queue_ms=0.000 service_ms=0.687 request_ready_ms=0.687"
+    },
+    {
+      "layer": 2,
+      "expert": 0,
+      "direct": false,
+      "result": "verified=true layer=2 expert=0 path=BufferedStaging fallback=None bytes_read=3481600 queue_ms=0.000 service_ms=0.210 request_ready_ms=0.210"
+    },
+    {
+      "layer": 2,
+      "expert": 0,
+      "direct": true,
+      "result": "verified=true layer=2 expert=0 path=DirectScatter fallback=None bytes_read=3481600 queue_ms=0.000 service_ms=1.007 request_ready_ms=1.007"
+    },
+    {
+      "layer": 2,
+      "expert": 256,
+      "direct": false,
+      "result": "verified=true layer=2 expert=256 path=BufferedStaging fallback=None bytes_read=3481600 queue_ms=0.000 service_ms=0.207 request_ready_ms=0.207"
+    },
+    {
+      "layer": 2,
+      "expert": 256,
+      "direct": true,
+      "result": "verified=true layer=2 expert=256 path=DirectScatter fallback=None bytes_read=3481600 queue_ms=0.000 service_ms=0.982 request_ready_ms=0.982"
+    },
+    {
+      "layer": 2,
+      "expert": 511,
+      "direct": false,
+      "result": "verified=true layer=2 expert=511 path=BufferedStaging fallback=None bytes_read=3481600 queue_ms=0.000 service_ms=0.421 request_ready_ms=0.421"
+    },
+    {
+      "layer": 2,
+      "expert": 511,
+      "direct": true,
+      "result": "verified=true layer=2 expert=511 path=DirectScatter fallback=None bytes_read=3481600 queue_ms=0.000 service_ms=0.827 request_ready_ms=0.827"
+    },
+    {
+      "layer": 4,
+      "expert": 0,
+      "direct": false,
+      "result": "verified=true layer=4 expert=0 path=BufferedStaging fallback=None bytes_read=3149824 queue_ms=0.000 service_ms=0.194 request_ready_ms=0.194"
+    },
+    {
+      "layer": 4,
+      "expert": 0,
+      "direct": true,
+      "result": "verified=true layer=4 expert=0 path=DirectScatter fallback=None bytes_read=3149824 queue_ms=0.000 service_ms=0.997 request_ready_ms=0.997"
+    },
+    {
+      "layer": 4,
+      "expert": 256,
+      "direct": false,
+      "result": "verified=true layer=4 expert=256 path=BufferedStaging fallback=None bytes_read=3149824 queue_ms=0.000 service_ms=0.197 request_ready_ms=0.197"
+    },
+    {
+      "layer": 4,
+      "expert": 256,
+      "direct": true,
+      "result": "verified=true layer=4 expert=256 path=DirectScatter fallback=None bytes_read=3149824 queue_ms=0.000 service_ms=0.875 request_ready_ms=0.875"
+    },
+    {
+      "layer": 4,
+      "expert": 511,
+      "direct": false,
+      "result": "verified=true layer=4 expert=511 path=BufferedStaging fallback=None bytes_read=3149824 queue_ms=0.000 service_ms=0.200 request_ready_ms=0.200"
+    },
+    {
+      "layer": 4,
+      "expert": 511,
+      "direct": true,
+      "result": "verified=true layer=4 expert=511 path=DirectScatter fallback=None bytes_read=3149824 queue_ms=0.000 service_ms=0.984 request_ready_ms=0.984"
+    }
+  ]
+}

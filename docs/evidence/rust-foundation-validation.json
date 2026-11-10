@@ -1,0 +1,167 @@
+{
+  "date": "2026-11-11",
+  "rust": "1.99.1",
+  "macos_tests": 15,
+  "linux_tests": 16,
+  "linux_direct_required": true,
+  "format_clippy_docs_passed_on_both_platforms": true,
+  "real_pack_checks": 18,
+  "rust_gpu_inference_run": false,
+  "historical_sources_imported": false,
+  "first_review_commit": "ece74d8b37312b8c1ed52891307b9fd6396d73a6",
+  "second_review_diff_sha256": "ebd734438c76e20333d28757b01286aece42597fc57aa24f8937ccf4c21569fd",
+  "source_sha256": {
+    "Cargo.lock": "671bc9452edd0fd2e3b686b30ff293a841ccf1d4ee5a4b0423c6fff9385b1fe4",
+    "Cargo.toml": "78bc088e9960a38ec835c5fab3dae9511b464d20dc50758e0c586186ee2d13e1",
+    "crates/juqe-cli/Cargo.toml": "0a49a65b674a2db0cca69ed3e75d6b9cbd91b684fc427a689fc49bef0b8c4831",
+    "crates/juqe-cli/src/main.rs": "88cd2d8c319069d66d92811f6b8483f0ef3f24481ffa8ef6554ccb3cfd408c2d",
+    "crates/juqe-cli/tests/command.rs": "274528d9e6ab9b99f16010056f41d86efb83773d9de4b8f360c692f2f9683f56",
+    "crates/juqe-core/Cargo.toml": "47d92fcccb8d431df6f4870cae101ceb1383b28dcf01b56b1af385556e5359b5",
+    "crates/juqe-core/src/cache.rs": "ed9ec0522634867700b7499e516f6336885c37a5633603e89b5bd65d39c14b0d",
+    "crates/juqe-core/src/format.rs": "30a569dd60b268561e8a12b4a371cd8bfae4a6e5f102b9955d53c624465e9349",
+    "crates/juqe-core/src/lib.rs": "56d84a65e4dd199a35440f2aae1b10946e64961534454ede54586bfb701c9d65",
+    "crates/juqe-core/tests/invariants.rs": "2572847c112d758d2808b40066effce53da8179ebc6024766a8d0a46a2d11760",
+    "crates/juqe-io/Cargo.toml": "aed9a98358be97a0cfe00e12d63a9564fd6f60b55f6f2a82c8eabe276e6a5035",
+    "crates/juqe-io/src/buffer.rs": "84575f4c3f6088a2a3d88a35aa561928e0feb702c3f71c7bb897ac8d4180e43b",
+    "crates/juqe-io/src/lib.rs": "55057b4dc8474118d938c04631853074b18290682f7fe1d289080322f90da943",
+    "crates/juqe-io/src/linux.rs": "d1e218ba65f38d4b43976d5c18a212e0dc8fa3e4a6e104814d8f8b4d85eeda8d",
+    "crates/juqe-io/tests/reads.rs": "45ad12cc89c122ad16e0a4a3cb13e299ef1fc9b88529c3cd29b623ba40e6ede9",
+    "rust-toolchain.toml": "d13306be0ecda81ce779baa290ffb417380d525928477f16200884b5169cca33"
+  },
+  "coderabbit_reviews": [
+    {
+      "number": 1,
+      "raw_log_sha256": "15afc40ca0d8a1c9a385f36bdf016a208e93c91031d50fd14f4760542d3976b8",
+      "result": {
+        "type": "complete",
+        "status": "review_completed",
+        "findings": 2,
+        "gate": {
+          "threshold": "major",
+          "status": "passed",
+          "blockingFindings": 0
+        },
+        "reviewedFiles": [
+          ".coderabbit.yaml",
+          ".github/pull_request_template.md",
+          ".github/workflows/ci.yml",
+          ".gitignore",
+          "AGENTS.md",
+          "CONTRIBUTING.md",
+          "Cargo.lock",
+          "Cargo.toml",
+          "README.md",
+          "crates/juqe-cli/Cargo.toml",
+          "crates/juqe-cli/src/main.rs",
+          "crates/juqe-core/Cargo.toml",
+          "crates/juqe-core/src/cache.rs",
+          "crates/juqe-core/src/format.rs",
+          "crates/juqe-core/src/lib.rs",
+          "crates/juqe-core/tests/invariants.rs",
+          "crates/juqe-io/Cargo.toml",
+          "crates/juqe-io/src/buffer.rs",
+          "crates/juqe-io/src/lib.rs",
+          "crates/juqe-io/src/linux.rs",
+          "crates/juqe-io/tests/reads.rs",
+          "docs/architecture.md",
+          "docs/evidence.md",
+          "docs/evidence/prototype-loading-summary.json",
+          "docs/roadmap.md",
+          "rust-toolchain.toml"
+        ],
+        "outcome": "completed_with_warnings",
+        "message": "Review completed with unverified findings"
+      },
+      "findings": [
+        {
+          "file": "crates/juqe-io/tests/reads.rs",
+          "severity": "minor",
+          "title": "The future-timestamp test does not verify the condition it claims to test."
+        },
+        {
+          "file": "docs/evidence.md",
+          "severity": "minor",
+          "title": "Clarify that the reported maxima come from scatter configurations only."
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "raw_log_sha256": "2fc08ec3fe71074a0fe4272765b31da2cd8383877c19a3fd00abbf11ced3595c",
+      "result": {
+        "type": "complete",
+        "status": "review_completed",
+        "findings": 0,
+        "gate": {
+          "threshold": "major",
+          "status": "passed",
+          "blockingFindings": 0
+        },
+        "reviewedFiles": [
+          ".coderabbit.yaml",
+          ".github/pull_request_template.md",
+          ".github/workflows/ci.yml",
+          ".gitignore",
+          "AGENTS.md",
+          "CONTRIBUTING.md",
+          "Cargo.toml",
+          "README.md",
+          "crates/juqe-cli/Cargo.toml",
+          "crates/juqe-cli/src/main.rs",
+          "crates/juqe-cli/tests/command.rs",
+          "crates/juqe-core/Cargo.toml",
+          "crates/juqe-core/src/format.rs",
+          "crates/juqe-io/Cargo.toml",
+          "crates/juqe-io/src/linux.rs",
+          "crates/juqe-io/tests/reads.rs",
+          "docs/architecture.md",
+          "docs/evidence.md",
+          "docs/roadmap.md",
+          "rust-toolchain.toml"
+        ],
+        "outcome": "completed",
+        "message": "Review completed"
+      },
+      "findings": []
+    }
+  ],
+  "github_actions_execution": "not_yet_observed",
+  "automatic_coderabbit_github_app": "repository_not_connected_at_cli_review_time",
+  "review_provenance_note": "Review identifiers refer to historical snapshots before history consolidation. Finding titles are English summaries; raw log hashes identify the unchanged original logs.",
+  "date_timezone": "Europe/Paris",
+  "english_documentation_review": {
+    "raw_log_sha256": "0704b5b106361f9413fe680de85f59f06107fce88ae2e08f791eef965577ba29",
+    "result": {
+      "type": "complete",
+      "status": "review_completed",
+      "findings": 1,
+      "gate": {
+        "threshold": "major",
+        "status": "passed",
+        "blockingFindings": 0
+      },
+      "reviewedFiles": [
+        ".coderabbit.yaml",
+        "AGENTS.md",
+        "CONTRIBUTING.md",
+        "README.md",
+        "docs/architecture.md",
+        "docs/evidence.md",
+        "docs/evidence/rust-foundation-validation.json",
+        "docs/roadmap.md",
+        "docs/validation.md"
+      ],
+      "outcome": "completed",
+      "message": "Review completed"
+    },
+    "findings": [
+      {
+        "file": "docs/validation.md",
+        "severity": "minor",
+        "title": "Correct the validation date.",
+        "resolution": "Clarified the Europe/Paris time zone. Local validation log timestamps are November 11, 2026, equivalent to November 10 in UTC."
+      }
+    ],
+    "scope_note": "The time-zone clarification and this record were added after the review."
+  }
+}

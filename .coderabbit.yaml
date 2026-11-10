@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://www.coderabbit.ai/integrations/schema.v2.json
+language: en-US
+reviews:
+  profile: assertive
+  request_changes_workflow: true
+  poem: false
+  auto_review:
+    enabled: true
+    drafts: true
+  path_instructions:
+    - path: "crates/juqe-core/**"
+      instructions: >-
+        Check cache ownership, stale and cross-cache completion handles, coalescing,
+        loading/leased slot protection, overflow and bounded metadata validation.
+        This crate must forbid unsafe code. The cache is metadata only; do not
+        assume it owns buffers or enforces GPU fences. Follow CONTRIBUTING.md.
+    - path: "crates/juqe-io/**"
+      instructions: >-
+        Audit every unsafe block for aliasing, initialization, ownership and bounds.
+        Check O_DIRECT alignment, partial reads, EINTR, EOF, fallback accounting,
+        concurrent positional reads and no successful publication on errors.
+        Comments must use Rust doc conventions and SAFETY explanations.
+    - path: "docs/**"
+      instructions: >-
+        Require American English and the documentation conventions in CONTRIBUTING.md.
+        Separate measured prototype results from Rust results and planned work.
+        Reject claims that equal memory implies equal throughput, or that a
+        synthetic transfer benchmark proves inference performance. The target
+        is <=10 ms per expert including queue delay, not per generated token.
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - "AGENTS.md"
+      - "CONTRIBUTING.md"
+      - "docs/architecture.md"

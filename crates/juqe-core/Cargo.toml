@@ -1,0 +1,12 @@
+[package]
+name = "juqe-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+description = "Validated expert layouts and cache state transitions for JUQE"
+
+[lints]
+workspace = true
