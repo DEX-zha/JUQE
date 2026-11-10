@@ -40,7 +40,7 @@ Do not describe the port as complete while its engine integration is missing.
 ## Progress
 
 - [x] Core cleanup
-- [ ] I/O cleanup
+- [x] I/O cleanup
 - [ ] CLI cleanup and source map
 - [ ] Operational runtime
 - [ ] Engine integration
