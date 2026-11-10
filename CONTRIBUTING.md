@@ -33,6 +33,14 @@ These are project conventions informed by the guides, not a claim of certificati
 - The current cache is a metadata state machine, not a scheduler or GPU lifetime
   manager. Preserve this boundary until the backend integration is tested.
 
+## Module structure
+
+Give each file one cohesive responsibility and a descriptive name. Aim for fewer
+than 200 lines per implementation file. Split by responsibility rather than line
+count; do not scatter one state transition across unrelated modules. Keep module
+roots and executable entry points short. Document the source map in
+`docs/architecture.md` and the implementation status in `docs/implementation.md`.
+
 ## Comments
 
 Use `//` for a non-obvious implementation constraint, `///` for public Rust APIs,
