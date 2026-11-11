@@ -70,3 +70,24 @@ A 10 ms expert-loading budget does not imply 10 ms per token or Qwen-equivalent
 throughput at the same memory budget. Evaluation must account for per-layer cache
 misses, bytes transferred, and compute time. Future comparisons must hold the model,
 quantization, context, and memory budget constant.
+
+## Source map
+
+| Responsibility | Location |
+| --- | --- |
+| Cache transitions and eviction | `crates/juqe-core/src/cache/state.rs` |
+| Slot states and lease ownership | `crates/juqe-core/src/cache/slot.rs`, `handles.rs` |
+| Actionable cache errors | `crates/juqe-core/src/cache/error.rs` |
+| Validated pack types | `crates/juqe-core/src/format/index.rs`, `layout.rs` |
+| Text format validation | `crates/juqe-core/src/format/parser.rs` |
+| Reader contract and timing | `crates/juqe-io/src/reader.rs` |
+| Buffered/direct path selection | `crates/juqe-io/src/source.rs` |
+| Linux alignment and scatter syscalls | `crates/juqe-io/src/linux/` |
+| Aligned allocation ownership | `crates/juqe-io/src/buffer.rs` |
+| CLI arguments | `crates/juqe-cli/src/args.rs` |
+| CLI operations | `crates/juqe-cli/src/commands/` |
+| CLI output | `crates/juqe-cli/src/output.rs` |
+
+Module roots expose the public API. Cache and format tests are separate integration
+tests, so they exercise public contracts without depending on internal file layout.
+The [implementation plan](implementation.md) tracks the operational rewrite.
