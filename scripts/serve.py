@@ -2,15 +2,11 @@
 """Run the compatible llama-server with JUQE's Rust expert runtime."""
 
 import argparse
-import hashlib
-import json
+import fcntl
 import os
 from pathlib import Path
 
-
-def digest(path):
-    with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+from juqe_build.manifest import verify_artifacts
 
 
 def main():
@@ -18,7 +14,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", required=True, type=Path, help="First GGUF shard")
     parser.add_argument("--experts", required=True, type=Path, help="Directory containing experts.idx and experts.bin")
-    parser.add_argument("--build", type=Path, default=root / "build/llama")
+    parser.add_argument("--build", type=Path, default=root / "build/gb10")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8080)
     parser.add_argument("--context", type=int, default=4096)
@@ -33,15 +29,8 @@ def main():
     if not 1 <= args.port <= 65535 or min(args.context, args.microbatch, args.slots) < 1:
         parser.error("port and request capacities must be positive and valid")
     build = args.build.resolve()
-    manifest_path = build / "build.json"
-    if not manifest_path.is_file():
-        parser.error("adapter build is missing; run scripts/build-engine.py first")
-    manifest = json.loads(manifest_path.read_text())
-    engine = Path(manifest["engine"])
-    original = engine / "build/bin/libllama.so.0.5.0"
-    library = build / "bin/libllama.so.0.5.0"
-    if digest(original) != manifest["original_library_sha256"] or digest(library) != manifest["adapter_library_sha256"]:
-        parser.error("engine libraries changed; rebuild the JUQE adapter")
+    if not (build / ".build.lock").is_file():
+        parser.error("complete engine build is missing; run scripts/build-engine.py first")
     for path in (args.model, args.experts / "experts.idx", args.experts / "experts.bin"):
         if not path.is_file():
             parser.error(f"required file is missing: {path}")
@@ -54,14 +43,23 @@ def main():
         "JUQE_IO_THREADS": str(args.workers), "JUQE_PRELOAD": "1" if args.preload else "0",
         "JUQE_GRAPH_UID": "1", "GGML_CUDA_HOST_WEIGHTS": "1",
         "LD_LIBRARY_PATH": os.pathsep.join(filter(None, [
-            str(build / "bin"), str(engine / "build/bin"), os.environ.get("LD_LIBRARY_PATH", "")])),
+            str(build / "cmake/bin"), os.environ.get("LD_LIBRARY_PATH", "")])),
     })
-    server = engine / "build/bin/llama-server"
-    command = [str(server), "--model", str(args.model.resolve()), "--host", args.host,
-               "--port", str(args.port), "--ctx-size", str(args.context), "--parallel", str(args.slots),
-               "--batch-size", str(args.microbatch), "--ubatch-size", str(args.microbatch),
-               "--n-gpu-layers", "99", "--load-mode", "none", "--lazy-mode", "on", "--threads", "4"]
-    os.execve(server, command, environment)
+    try:
+        with (build / ".build.lock").open("r") as guard:
+            fcntl.flock(guard, fcntl.LOCK_SH | fcntl.LOCK_NB)
+            server = verify_artifacts(build)
+            command = [str(server), "--model", str(args.model.resolve()), "--host", args.host,
+                       "--port", str(args.port), "--ctx-size", str(args.context), "--parallel", str(args.slots),
+                       "--batch-size", str(args.microbatch), "--ubatch-size", str(args.microbatch),
+                       "--n-gpu-layers", "99", "--load-mode", "none", "--lazy-mode", "on", "--threads", "4"]
+            # Keep the shared lock across exec so a rebuild cannot replace live libraries.
+            os.set_inheritable(guard.fileno(), True)
+            os.execve(server, command, environment)
+    except BlockingIOError:
+        parser.error("an engine build is in progress; wait for it to finish")
+    except (OSError, ValueError, KeyError) as error:
+        parser.error(str(error))
 
 
 if __name__ == "__main__":

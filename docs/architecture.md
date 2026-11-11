@@ -93,7 +93,9 @@ quantization, context, and memory budget constant.
 | Engine configuration and pack geometry | `adapters/llama/config.cpp`, `layout.cpp` |
 | Pinned pool allocation and setup | `adapters/llama/pools.cpp`, `attach.cpp` |
 | Synchronized routing callbacks | `adapters/llama/routing.cpp`, `callback.cpp` |
-| Build and service launch | `scripts/build-engine.py`, `serve.py` |
+| Pinned source, build profile, and artifact verification | `scripts/juqe_build/`, `engine/lock.json` |
+| Engine integration patches and CMake binding | `engine/patches/`, `engine/adapter.cmake` |
+| Build and service entry points | `scripts/build-engine.py`, `scripts/serve.py` |
 
 Module roots expose the public API. Cache and format tests are separate integration
 tests, so they exercise public contracts without depending on internal file layout.

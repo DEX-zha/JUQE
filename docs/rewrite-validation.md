@@ -1,5 +1,8 @@
 # Operational rewrite validation
 
+This report records the original adapter-overlay validation. The current build
+procedure is documented in [Pinned engine build](engine-build.md).
+
 ## Scope
 
 The exact-routing JUQE runtime is integrated with the project's existing

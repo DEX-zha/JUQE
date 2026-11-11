@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/ggml-org/llama.cpp.git",
+  "commit": "3423f940e874e6a97537f2e9854e457f773ad366",
+  "tree": "663d58663539e84789adc6cbff89809c0c9a7e73",
+  "patches": [
+    {
+      "path": "engine/patches/0001-expert-lifecycle.patch",
+      "sha256": "946d7ff61ba8cab685568eae1bbb7392cef9fef8d20e2995b19626f179525684"
+    },
+    {
+      "path": "engine/patches/0002-pinned-host-weights.patch",
+      "sha256": "c9a169e25573b994bd5479a347d2f5f9b699c643c6b4043f72f0737b5fe75f94"
+    },
+    {
+      "path": "engine/patches/0003-callback-graph-identity.patch",
+      "sha256": "da16593d9fee8a5853098c3ef58e3c33c8d0a52c3ffdced2cd35df4c97a656c3"
+    }
+  ],
+  "patched_tree": "9fae57e1bd682851fe6b2884ce7eb2c06727fd04"
+}

@@ -1,0 +1,62 @@
+--- a/ggml/src/ggml-backend.cpp
++++ b/ggml/src/ggml-backend.cpp
+@@ -772,6 +772,12 @@
+ #define GGML_SCHED_MAX_COPIES 4
+ #endif
+ 
++// JUQE: one stable ID per callback range, invalidated by the parent split ID.
++struct juqe_callback_view {
++    uint64_t parent_uid, uid;
++    int end;
++};
++
+ struct ggml_backend_sched_split {
+     int backend_id;
+     int i_start;
+@@ -779,6 +785,9 @@
+     struct ggml_tensor ** inputs;
+     int n_inputs;
+     int inputs_capacity;
++    // JUQE: POD storage because splits are allocated with calloc/realloc.
++    struct juqe_callback_view * juqe_views;
++    int juqe_views_capacity;
+     // graph view of this split
+     struct ggml_cgraph graph;
+ };
+@@ -1818,6 +1827,28 @@
+ 
+                 struct ggml_cgraph gv = ggml_graph_view(&split->graph, j0, j1 + 1);
+ 
++                // JUQE_GRAPH_UID opts into a data-only callback contract: callbacks
++                // must not change tensor metadata, storage addresses or graph structure.
++                // Rebuilds invalidate the parent UID; changing callback ranges get new IDs.
++                static const bool juqe_graph_uid = getenv("JUQE_GRAPH_UID") &&
++                    atoi(getenv("JUQE_GRAPH_UID")) != 0;
++                if (juqe_graph_uid && sched->n_copies == 1 && split->graph.uid != 0) {
++                    if (split->juqe_views_capacity < split->graph.n_nodes) {
++                        free(split->juqe_views);
++                        split->juqe_views_capacity = split->graph.n_nodes;
++                        split->juqe_views = (struct juqe_callback_view *) calloc(
++                            split->juqe_views_capacity, sizeof(struct juqe_callback_view));
++                        GGML_ASSERT(split->juqe_views);
++                    }
++                    auto & view = split->juqe_views[j0];
++                    if (view.parent_uid != split->graph.uid || view.end != j1 + 1) {
++                        view.parent_uid = split->graph.uid;
++                        view.end = j1 + 1;
++                        view.uid = ggml_graph_next_uid();
++                    }
++                    gv.uid = view.uid;
++                }
++
+                 enum ggml_status ec = ggml_backend_graph_compute_async(split_backend, &gv);
+                 if (ec != GGML_STATUS_SUCCESS) {
+                     return ec;
+@@ -1931,6 +1962,7 @@
+     ggml_hash_set_free(&sched->hash_set);
+     for (int i = 0; i < sched->splits_capacity; i++) {
+         free(sched->splits[i].inputs);
++        free(sched->splits[i].juqe_views); // JUQE
+     }
+     free(sched->splits);
+     free(sched->graph_inputs);

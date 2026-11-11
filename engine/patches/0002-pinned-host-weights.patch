@@ -1,0 +1,14 @@
+--- a/ggml/src/ggml-cuda/ggml-cuda.cu
++++ b/ggml/src/ggml-cuda/ggml-cuda.cu
+@@ -5601,7 +5601,10 @@
+ static bool ggml_backend_cuda_device_supports_buft(ggml_backend_dev_t dev, ggml_backend_buffer_type_t buft) {
+     ggml_backend_cuda_device_context * dev_ctx = (ggml_backend_cuda_device_context *) dev->context;
+     const bool integrated = ggml_cuda_info().devices[dev_ctx->device].integrated;
+-    return (ggml_backend_buft_is_cuda(buft) && buft->device == dev) || (integrated && ggml_backend_buft_is_cuda_host(buft));
++    // The GB10 adapter exposes pinned expert pools directly to CUDA kernels.
++    static const bool host_weights = getenv("GGML_CUDA_HOST_WEIGHTS") != nullptr;
++    return (ggml_backend_buft_is_cuda(buft) && buft->device == dev) ||
++           ((integrated || host_weights) && ggml_backend_buft_is_cuda_host(buft));
+ }
+ 
+ static int64_t get_op_batch_size(const ggml_tensor * op) {

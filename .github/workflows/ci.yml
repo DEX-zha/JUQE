@@ -37,5 +37,8 @@ jobs:
           python3 -m venv .local/cpp-format
           .local/cpp-format/bin/pip install clang-format==19.1.7
           .local/cpp-format/bin/clang-format --dry-run --Werror adapters/llama/*.cpp adapters/llama/*.h include/juqe.h tests/cabi.c
-      - name: Launcher checks
+      - name: Build and launcher checks
         run: python3 -m unittest discover -s tests -p "test_*.py"
+      - name: Pinned engine source integration
+        if: runner.os == 'Linux'
+        run: python3 scripts/build-engine.py --prepare-only

@@ -5,30 +5,49 @@ engine supplies model loading, attention, quantization kernels, and the HTTP ser
 
 ## Requirements
 
-- Linux ARM64 on NVIDIA GB10, with a compatible direct-I/O filesystem.
-  The standalone Rust components also have macOS coverage; GPU integration is
-  currently validated on GB10 only.
-- The existing JUQE-patched llama.cpp source tree and its completed CMake Makefiles build.
-- Rust 1.99.1, a C++17 compiler, and Python 3.11 or later.
-- Matching model GGUF shards and an existing `experts.idx`/`experts.bin` pack.
+The supported inference profile is Linux ARM64 on NVIDIA GB10 with CUDA Toolkit
+13.0 and a compatible NVIDIA driver. The standalone Rust components also have
+macOS coverage. GPU integration on other hardware is not validated.
 
-The adapter currently targets the engine already used by this project. It is not
-a drop-in plugin for arbitrary llama.cpp or Ollama versions. The build script
-requires a separate JUQE offload object in that engine's build.
-
-## Build
-
-From the repository root:
+On Ubuntu 24.04, install the host build tools:
 
 ```sh
-cargo test --workspace --locked
-python3 scripts/check-cabi.py
-python3 scripts/build-engine.py --engine /path/to/llama.cpp-juqe
+sudo apt-get update
+sudo apt-get install build-essential cmake ninja-build git python3 libssl-dev
 ```
 
-The adapter is written to `build/llama`. It reuses the engine's compiled objects
-and replaces only its expert-offload object. The original engine build remains
-unchanged. `build/llama/build.json` records the libraries and build inputs.
+Install CUDA Toolkit 13.0 and [rustup](https://rust-lang.org/tools/install/) if they
+are not already available. JUQE's checked-in toolchain selects Rust 1.99.1.
+Python 3.11 or later and CMake 3.24 or later are required. Keep sufficient memory available for compilation;
+the default limits the build to two compiler jobs.
+
+Supply matching GGUF shards and an existing `experts.idx`/`experts.bin` pack on a
+filesystem supporting direct I/O. Model weights and pack creation are separate
+from engine compilation.
+
+## Build from a clean checkout
+
+```sh
+git clone https://github.com/DEX-zha/JUQE.git
+cd JUQE
+python3 scripts/build-engine.py --jobs 2
+```
+
+The script fetches the commit in `engine/lock.json`, verifies the base tree and
+patch checksums, applies the versioned patches, and builds Rust plus the complete
+CUDA server. It does not read or reuse an earlier llama.cpp installation.
+Network access is needed for the pinned Git source and uncached Cargo dependencies.
+
+The default output is `build/gb10`; use `--output /path/to/build` to select another
+empty directory. For a different Toolkit location, pass
+`--cuda-compiler /path/to/cuda-13.0/bin/nvcc`. The profile requires CUDA 13.0.
+
+```sh
+python3 scripts/build-engine.py --verify-only
+```
+
+Verification checks the pinned source tree and recorded server artifacts.
+See [Pinned engine build](engine-build.md) for provenance, rebuilds, and recovery.
 
 ## Start the server
 
@@ -42,10 +61,15 @@ python3 scripts/serve.py \
   --workers 4
 ```
 
-The launcher binds to `127.0.0.1` by default. It checks library hashes before
-starting and replaces itself with the server process, so normal signals reach the
+The launcher binds to `127.0.0.1` by default. It checks the server and all engine
+shared-library hashes before starting and replaces itself with the server process, so normal signals reach the
 server directly. Configure this launcher through its arguments; it rejects
 inherited `JUQE_*` settings to avoid mixing old configurations with the new runtime.
+Use `--build /path/to/build` when the build used a custom output directory. The
+launcher holds a shared build lock until the server exits; rebuilding that directory
+is refused while it is serving. Use a separate build directory for upgrades.
+
+This profile serves the HTTP API. It does not download or bundle a separate web UI.
 
 The default microbatch is eight tokens and the default server slot count is one.
 Increase them only within the expert-cache capacity. A microbatch that selects

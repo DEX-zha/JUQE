@@ -1,0 +1,135 @@
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -70,6 +70,8 @@
+ 
+ target_link_libraries(llama PUBLIC ggml)
+ 
++include("${JUQE_ROOT}/engine/adapter.cmake")
++
+ if (BUILD_SHARED_LIBS)
+     set_target_properties(llama PROPERTIES POSITION_INDEPENDENT_CODE ON)
+     target_compile_definitions(llama PRIVATE LLAMA_BUILD)
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -140,6 +140,13 @@
+ 
+     cparams.cb_eval           = params.cb_eval;
+     cparams.cb_eval_user_data = params.cb_eval_user_data;
++
++    // Expert preparation precedes the caller's observation callback.
++    if (model.juqe) {
++        juqe_chain = std::make_unique<juqe_cb_chain>(juqe_cb_chain{ model.juqe, cparams.cb_eval, cparams.cb_eval_user_data });
++        cparams.cb_eval = juqe_offload_eval_cb;
++        cparams.cb_eval_user_data = juqe_chain.get();
++    }
+ 
+     cparams.ctx_other = nullptr;
+ 
+--- a/src/llama-context.h
++++ b/src/llama-context.h
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include "llama.h"
++#include "juqe-offload.h"
+ #include "llama-ext.h"
+ #include "llama-cparams.h"
+ #include "llama-graph.h"
+@@ -346,6 +347,7 @@
+     std::vector<swap_info> output_swaps;
+ 
+     ggml_backend_sched_ptr sched;
++    std::unique_ptr<juqe_cb_chain> juqe_chain;
+ 
+     bool sched_need_reserve = true;
+ 
+--- a/src/llama-model.cpp
++++ b/src/llama-model.cpp
+@@ -1,4 +1,5 @@
+ #include "llama-model.h"
++#include "juqe-offload.h"
+ 
+ #include "llama-arch.h"
+ #include "llama-ext.h"
+@@ -1218,6 +1219,7 @@
+ }
+ 
+ llama_model::~llama_model() {
++    juqe_offload_free(juqe);
+     for (auto * lora : loras) {
+         delete lora;
+     }
+--- a/src/llama-model.h
++++ b/src/llama-model.h
+@@ -693,6 +693,9 @@
+ 
+     std::vector<llama_layer> layers;
+ 
++    // Owned expert pools, released before model tensors.
++    struct juqe_offload * juqe = nullptr;
++
+     //Dense linear projections for SentenceTransformers models like embeddinggemma
+     // For Sentence Transformers models structure see
+     // https://sbert.net/docs/sentence_transformer/usage/custom_models.html#structure-of-sentence-transformer-models
+--- a/src/llama.cpp
++++ b/src/llama.cpp
+@@ -10,6 +10,7 @@
+ #include "llama-model-loader.h"
+ #include "llama-model-saver.h"
+ #include "llama-model.h"
++#include "juqe-offload.h"
+ 
+ #include "ggml.h"
+ #include "ggml-cpp.h"
+@@ -370,6 +371,10 @@
+             return {-2, nullptr};
+         }
+ 
++        if (juqe_offload_enabled()) {
++            model->juqe = juqe_offload_attach(*model, params.no_alloc);
++        }
++
+         return {0, model_ptr.release()};
+     } catch (const std::exception & err) {
+         LLAMA_LOG_ERROR("%s: error loading model: %s\n", __func__, err.what());
+--- a/src/models/bailingmoe3.cpp
++++ b/src/models/bailingmoe3.cpp
+@@ -1,4 +1,5 @@
+ #include "models.h"
++#include "juqe-offload.h"
+ #include "llama-memory-recurrent.h"
+ 
+ #include <algorithm>
+@@ -116,9 +117,9 @@
+         } else {
+             layer.ffn_gate_inp = create_tensor(tn(LLM_TENSOR_FFN_GATE_INP, "weight", il), { n_embd, n_expert }, trunk_flags);
+             layer.ffn_exp_probs_b = create_tensor(tn(LLM_TENSOR_FFN_EXP_PROBS_B, "bias", il), { n_expert }, trunk_flags);
+-            layer.ffn_gate_exps = create_tensor(tn(LLM_TENSOR_FFN_GATE_EXPS, "weight", il), { n_embd, hparams.n_ff_exp(), n_expert }, trunk_flags);
+-            layer.ffn_up_exps = create_tensor(tn(LLM_TENSOR_FFN_UP_EXPS, "weight", il), { n_embd, hparams.n_ff_exp(), n_expert }, trunk_flags);
+-            layer.ffn_down_exps = create_tensor(tn(LLM_TENSOR_FFN_DOWN_EXPS, "weight", il), { hparams.n_ff_exp(), n_embd, n_expert }, trunk_flags);
++            layer.ffn_gate_exps = create_tensor(tn(LLM_TENSOR_FFN_GATE_EXPS, "weight", il), { n_embd, hparams.n_ff_exp(), n_expert }, trunk_flags | (juqe_offload_enabled() ? TENSOR_SKIP : 0));
++            layer.ffn_up_exps = create_tensor(tn(LLM_TENSOR_FFN_UP_EXPS, "weight", il), { n_embd, hparams.n_ff_exp(), n_expert }, trunk_flags | (juqe_offload_enabled() ? TENSOR_SKIP : 0));
++            layer.ffn_down_exps = create_tensor(tn(LLM_TENSOR_FFN_DOWN_EXPS, "weight", il), { hparams.n_ff_exp(), n_embd, n_expert }, trunk_flags | (juqe_offload_enabled() ? TENSOR_SKIP : 0));
+             layer.ffn_gate_shexp = create_tensor(tn(LLM_TENSOR_FFN_GATE_SHEXP, "weight", il), { n_embd, hparams.n_ff_shexp }, trunk_flags);
+             layer.ffn_up_shexp = create_tensor(tn(LLM_TENSOR_FFN_UP_SHEXP, "weight", il), { n_embd, hparams.n_ff_shexp }, trunk_flags);
+             layer.ffn_down_shexp = create_tensor(tn(LLM_TENSOR_FFN_DOWN_SHEXP, "weight", il), { hparams.n_ff_shexp, n_embd }, trunk_flags);
+--- a/src/models/qwen4exp.cpp
++++ b/src/models/qwen4exp.cpp
+@@ -1,4 +1,5 @@
+ #include "models.h"
++#include "juqe-offload.h"
+ #include "llama-impl.h"
+ #include "llama-memory-hybrid-idx.h"
+ #include "llama-memory-recurrent.h"
+@@ -248,8 +249,9 @@
+         }
+ 
+         layer.ffn_gate_inp  = create_tensor(tn(LLM_TENSOR_FFN_GATE_INP,  "weight", il), { n_embd, n_expert }, 0);
+-        layer.ffn_down_exps = create_tensor(tn(LLM_TENSOR_FFN_DOWN_EXPS, "weight", il), { n_ff_exp, n_embd, n_expert }, 0);
+-        create_tensor_gate_up_exps(layer, il, n_embd, n_ff_exp, n_expert, 0);
++        const int exps_flags = juqe_offload_enabled() ? TENSOR_SKIP : 0;
++        layer.ffn_down_exps = create_tensor(tn(LLM_TENSOR_FFN_DOWN_EXPS, "weight", il), { n_ff_exp, n_embd, n_expert }, exps_flags);
++        create_tensor_gate_up_exps(layer, il, n_embd, n_ff_exp, n_expert, exps_flags);
+ 
+         layer.ffn_gate_inp_shexp = create_tensor(tn(LLM_TENSOR_FFN_GATE_INP_SHEXP, "weight", il), { n_embd }, 0);
+         layer.ffn_gate_shexp     = create_tensor(tn(LLM_TENSOR_FFN_GATE_SHEXP,     "weight", il), { n_embd, n_ff_shexp }, 0);

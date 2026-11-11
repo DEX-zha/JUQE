@@ -25,14 +25,15 @@ and the experimental two-wave pipeline are not enabled or silently emulated.
 
 ## Run the server
 
-Use the compatible JUQE-patched engine and matching pack described in the
-[operating guide](docs/operations.md). Install [rustup](https://rust-lang.org/tools/install/)
-and use Python 3.11 or later.
+Use Linux ARM64 with NVIDIA GB10, CUDA Toolkit 13.0, and the prerequisites in the
+[operating guide](docs/operations.md). The build downloads a pinned llama.cpp commit
+and compiles the complete server with JUQE; no previous engine build is required.
+Model shards and a matching expert pack must already be available.
 
 ```sh
 cargo test --workspace --locked
 python3 scripts/check-cabi.py
-python3 scripts/build-engine.py --engine /path/to/llama.cpp-juqe
+python3 scripts/build-engine.py --jobs 2
 python3 scripts/serve.py \
   --model /path/to/model-00001-of-00003.gguf \
   --experts /path/to/experts \
@@ -69,6 +70,8 @@ omitting `--direct`; direct I/O requires Linux and a compatible filesystem.
 ## Documentation
 
 - [Operating guide](docs/operations.md)
+- [Pinned engine build](docs/engine-build.md)
+- [Pinned engine validation](docs/engine-build-validation.md)
 - [Architecture and source map](docs/architecture.md)
 - [Runtime ownership](docs/runtime.md)
 - [Engine integration contract](docs/ffi.md)

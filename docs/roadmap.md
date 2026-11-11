@@ -4,14 +4,12 @@
 
 The operational exact-routing path now includes validated pack import, cache
 ownership, bounded loading, direct scatter reads, a checked C ABI, pinned engine
-pools, and an HTTP server launcher. The CLI can inspect and verify existing packs.
+pools, and an HTTP server launcher. The CLI can inspect and verify existing packs. A pinned source build now compiles
+the compatible engine directly; no previous engine installation is required.
 See the [implementation record](implementation.md) and [validation report](rewrite-validation.md).
 
 ## Remaining product work
 
-- Distribute or reproducibly build the compatible engine dependency. The current
-  adapter uses an existing JUQE-patched engine build; arbitrary upstream builds
-  are unsupported.
 - Add a versioned pack manifest that authenticates model and weight identity.
   Current validation checks bounds and geometry; operators supply matching packs.
 - Extend service recovery beyond the engine's current fail-stop callback contract.

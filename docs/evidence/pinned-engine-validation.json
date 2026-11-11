@@ -1,0 +1,264 @@
+{
+  "date": "2026-11-11",
+  "date_timezone": "Europe/Paris",
+  "profile": "linux-arm64-gb10-cuda13.0",
+  "engine": {
+    "schema": 1,
+    "repository": "https://github.com/ggml-org/llama.cpp.git",
+    "commit": "3423f940e874e6a97537f2e9854e457f773ad366",
+    "tree": "663d58663539e84789adc6cbff89809c0c9a7e73",
+    "patches": [
+      {
+        "path": "engine/patches/0001-expert-lifecycle.patch",
+        "sha256": "946d7ff61ba8cab685568eae1bbb7392cef9fef8d20e2995b19626f179525684"
+      },
+      {
+        "path": "engine/patches/0002-pinned-host-weights.patch",
+        "sha256": "c9a169e25573b994bd5479a347d2f5f9b699c643c6b4043f72f0737b5fe75f94"
+      },
+      {
+        "path": "engine/patches/0003-callback-graph-identity.patch",
+        "sha256": "da16593d9fee8a5853098c3ef58e3c33c8d0a52c3ffdced2cd35df4c97a656c3"
+      }
+    ],
+    "patched_tree": "9fae57e1bd682851fe6b2884ce7eb2c06727fd04"
+  },
+  "tool_versions": {
+    "git": "git version 2.43.0",
+    "cmake": "cmake version 3.28.3\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).",
+    "ninja": "1.11.1",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "cxx": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:57:39_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0"
+  },
+  "source_sha256": {
+    "Cargo.lock": "7c5fecb428b788ead1c04147d4bedbda6e174ff83fde516aa88e05b0ee60e8a2",
+    "Cargo.toml": "489fcee260bfcc7538b5aeafe21f45fd5f78f48b4cf0898c624889c0fdaa0ecd",
+    "adapters/llama/attach.cpp": "95bef575bc41889700f5f840086fdcd3611ba02e58695d82d692e6526ea3ffeb",
+    "adapters/llama/bridge.h": "b61993e2c98cf0c8e86d18611b7bd4a1f8ec40f5a4001c2f9945145ef6fc3272",
+    "adapters/llama/callback.cpp": "79fd9a93ac344c100ab376d1ef24575e7dac569ba06b003a1ddfe6df50e45265",
+    "adapters/llama/config.cpp": "25e4b5f3267aba0082410661b873079f61c348bad45e804ae7b3c647f1f1984e",
+    "adapters/llama/config.h": "15f0ed26c53ac5340d351a8b7e3abb832bbcf8cb181dc399120d01c613bf2d2b",
+    "adapters/llama/juqe-offload.h": "799bfb1cf7aa928a518f4025e35f5a8b3d4ec3426a8d0bbc4062ecd2ea5769b5",
+    "adapters/llama/layout.cpp": "7fc942e2d2c257fc32c34f04650ba1fbf8c8b392025fe486941d15174116f357",
+    "adapters/llama/pools.cpp": "ad0c8642a78d9f840f02f7617775ac162ab25e969234c8553f37932f50fabdb6",
+    "adapters/llama/routing.cpp": "e2afdf35363cab276ed6eff20e992ecd9c0ee84cd6479c4b69bce6d7da50f4b3",
+    "adapters/llama/state.h": "115d9858ffa66785b29fa8b14387405039f6e510f5ad6c54b442c861fef90603",
+    "crates/juqe-cli/Cargo.toml": "0a49a65b674a2db0cca69ed3e75d6b9cbd91b684fc427a689fc49bef0b8c4831",
+    "crates/juqe-cli/src/args.rs": "ee5b3a4d09dbb2cb27cc69f63801638a6ae4c21357d09b3b142f5a8669b05ba8",
+    "crates/juqe-cli/src/commands/inspect.rs": "27e2bab46ee17b9d1a23d4fc0b55a8d27c0a0996a542807e7d0cc39e338c24ba",
+    "crates/juqe-cli/src/commands/mod.rs": "1b4b401748a32bfb0cc189e42a86fa5eb53681900729d5db2b101e80c4600440",
+    "crates/juqe-cli/src/commands/verify.rs": "7fb1d6756c3f7596ff0fcfa2e00a6130c43e9ae0f027a794565b603419ff7e99",
+    "crates/juqe-cli/src/main.rs": "e3d035600fdf4449cbabd61d531a76532b5eaee83179c31ffbe4a0211ecb64ab",
+    "crates/juqe-cli/src/output.rs": "eca2857425f09374b40987d64f4c8a18943d0e3aab3348b2d853e169163d4f0b",
+    "crates/juqe-cli/tests/command.rs": "5ea0fcfd844da79484ecf958a2ac021c985380fb4de94969f1995bd1952bc237",
+    "crates/juqe-core/Cargo.toml": "47d92fcccb8d431df6f4870cae101ceb1383b28dcf01b56b1af385556e5359b5",
+    "crates/juqe-core/src/cache/error.rs": "010a6716af3b7319b3f2fede68751e88275db33e7b0e22025b28b18121c4b506",
+    "crates/juqe-core/src/cache/handles.rs": "26586be6f8313cb98f948a59b900ba265dfc92772ae2223ac243e7964b448b6d",
+    "crates/juqe-core/src/cache/mod.rs": "ccccbfa6582709f26f9ee498776cd5758db837911c5223729fee9d284c25b31a",
+    "crates/juqe-core/src/cache/slot.rs": "0c7875eda8f9fd2aecd6f9a7821337d5ab786d62463097c70cc0a4bc7ec54e66",
+    "crates/juqe-core/src/cache/state.rs": "3bce78537bed6b382fb8b1cf32ceecb945f28d9390a5acab8bac635efff52530",
+    "crates/juqe-core/src/format/error.rs": "448c8a0ab90a0b4925343ad166258ab718c2dd029421e06f9f237c8153401bbe",
+    "crates/juqe-core/src/format/index.rs": "140ec7d6706a06024ddf506bf864f13b7279b62e277734aa5a7abccf846f5519",
+    "crates/juqe-core/src/format/layout.rs": "752c7e30822ed173168ba0520f566623a53c9e76158022acd7e206de16b48ee8",
+    "crates/juqe-core/src/format/mod.rs": "d38eba9f56692c606dad3048af457546e44752d1f44fd1bffdc5f42ea758a0ec",
+    "crates/juqe-core/src/format/parser.rs": "dd8f5cfeafca063217f288c8822cba428ef682f8a296030f7db6d797d9188dc1",
+    "crates/juqe-core/src/lib.rs": "56d84a65e4dd199a35440f2aae1b10946e64961534454ede54586bfb701c9d65",
+    "crates/juqe-core/tests/cache.rs": "31f43c9aeddc2000ce438267eae331defbc395ead05f0b55ac585367122133c6",
+    "crates/juqe-core/tests/format.rs": "65f6ee5230286bd8ef5e142afc3127fc23d61434ef2c8fe2a784e28e177023fe",
+    "crates/juqe-ffi/Cargo.toml": "e6720143ab2479d44891edb098e18232f7e3c95f1af3367749b7d0276d04dad7",
+    "crates/juqe-ffi/src/boundary.rs": "5195a090fa6b8e6812abbfdbb5fee9e475662a7825a42e9669117c945db17fb5",
+    "crates/juqe-ffi/src/lib.rs": "5d3ba396440f2b68e2880d6871f734b63e54110d6646aefdd4739e164fccb76d",
+    "crates/juqe-ffi/src/memory/mod.rs": "66d3e282b3af9c4f13a170080aadbe22abbab540ecc66915c1e3cd3276e897e8",
+    "crates/juqe-ffi/src/memory/region.rs": "77e8430dc1aa04c2e980916597b2aaab624864dc14fe558ba956edc2d1b1ec02",
+    "crates/juqe-ffi/src/pack.rs": "ffc478647aa6b1ebce94aebc552014c46a052feae6624c88e66d18f99d7b2f07",
+    "crates/juqe-ffi/src/runtime/batch.rs": "c4bfea853a698f3b308e763505c72d561a50b162354bfdccf00cef485b441860",
+    "crates/juqe-ffi/src/runtime/create.rs": "b50b711c7a5d70250183f80aa4b82ad6538a5e8c6607d4b27883bceb36ec7e1d",
+    "crates/juqe-ffi/src/runtime/mod.rs": "4d53a1dce0e9345c2522e974c75464165ea360b0cca1cc846527eb249c86f8c0",
+    "crates/juqe-ffi/src/types.rs": "e6b49b3bb10c964aa80b1706d8717e97f5df98c60fafa18778c981b047769401",
+    "crates/juqe-io/Cargo.toml": "aed9a98358be97a0cfe00e12d63a9564fd6f60b55f6f2a82c8eabe276e6a5035",
+    "crates/juqe-io/src/buffer.rs": "84575f4c3f6088a2a3d88a35aa561928e0feb702c3f71c7bb897ac8d4180e43b",
+    "crates/juqe-io/src/index.rs": "8c837fb388c1d268ab4c7ec102d8d4bc8f9d00575b957b62bb0031d3a2bfada1",
+    "crates/juqe-io/src/lib.rs": "6dc54691a0e986b27e518acbdacd4be7a52ba50cfd4780af5f580c0c8ff88a34",
+    "crates/juqe-io/src/linux/alignment.rs": "71f3618b2a2b6e46a6f65836637bc41222f5781d895aeb28556bfa8daf8c1e65",
+    "crates/juqe-io/src/linux/mod.rs": "fe1562bbb8f5fa364bae3c109de14fc8f319747a8456bd769ac1a3e59b5b871e",
+    "crates/juqe-io/src/linux/scatter.rs": "2cc824aa2612ffcb7c6b72df7f11918e2ad0e6115df2c3dbf8d443746fb13d93",
+    "crates/juqe-io/src/positional.rs": "1ae58af85451e8f33a53de4ce08ae7afd797fc8d5709797ad5655cc39d6aabb9",
+    "crates/juqe-io/src/reader.rs": "cf05cbdc243d14f828a0705eea83b26082dba83270b008aa6b409a96b433a3ff",
+    "crates/juqe-io/src/report.rs": "1c71cd98043e153a8be2d0c05e32c8447cfaacb078f1a3bce114d9d8be2a9473",
+    "crates/juqe-io/src/source.rs": "edd91c02156a59b28f9d43d05616b019a9eb4997721f1b225eb1dbf44d676d6f",
+    "crates/juqe-io/tests/reads.rs": "45ad12cc89c122ad16e0a4a3cb13e299ef1fc9b88529c3cd29b623ba40e6ede9",
+    "crates/juqe-runtime/Cargo.toml": "9eddf74d836a1d20645d654c708b49482d876e100f5328d82aa67bd236a8a539",
+    "crates/juqe-runtime/src/batch.rs": "81a14dad4d02e22e95e4095d5a68b96236243a0857622b5916c4f295f7a62e24",
+    "crates/juqe-runtime/src/config.rs": "99c47757714f737fcb1ffe83975df52fccecef7af87474d5a5c0aadc0ce01a58",
+    "crates/juqe-runtime/src/dispatch.rs": "519dd5384f1c42ae2eceb720b4318ae888a4f581995b38bae8886a7f6e8411c8",
+    "crates/juqe-runtime/src/error.rs": "594e48db0e06b17c8e3b727fb48172c8af9c266e5102b2edebad47cbf5e4ae9e",
+    "crates/juqe-runtime/src/lib.rs": "ff689e8f42168d9937f197de9c35fe1c31212ffd2978003e496f6e33eb8308ea",
+    "crates/juqe-runtime/src/pool.rs": "9297ac950fd230cb23df74518ba476c57d4b433e688fccf6ea73892e3e1b5bc3",
+    "crates/juqe-runtime/src/runtime.rs": "7de1de974e7aefedd78d2df103040a2451f5dd33cf640d9c8c1a6b015c4783d1",
+    "crates/juqe-runtime/src/storage.rs": "5ce9fcf99b04df7dca38d96dec2b426fe642d3d3e54b47ace235c91fb2e23125",
+    "crates/juqe-runtime/src/worker.rs": "3d2d7ca85becc61fc44910a23be2a6f6281b785de8b8385e2f017d0c39a00d80",
+    "crates/juqe-runtime/tests/loading.rs": "0c36062950c0f8a6625f22cecb6f0fcabfb970ad5a8b2882bc3e0badfbdbd39d",
+    "crates/juqe-runtime/tests/support/mod.rs": "9209408143dd8fb0d9dbb9c18d1dfe54ed9873f71d940e94cc5938feb2769a7d",
+    "crates/juqe-runtime/tests/workers.rs": "ef0e84c37864c9704755126e4d88b1ca56ab9a9b1dd63c2727581bbee365a1f3",
+    "engine/LICENSE.llama.cpp": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+    "engine/adapter.cmake": "ce75fc86335a89612f628b1c27fe61769d2cead21df014cf11436211cd4381f8",
+    "engine/lock.json": "cf19ee802a51835e33eaf9d73fda2f5bd1dfca26c815be84e1630ff5a74ffb1e",
+    "engine/patches/0001-expert-lifecycle.patch": "946d7ff61ba8cab685568eae1bbb7392cef9fef8d20e2995b19626f179525684",
+    "engine/patches/0002-pinned-host-weights.patch": "c9a169e25573b994bd5479a347d2f5f9b699c643c6b4043f72f0737b5fe75f94",
+    "engine/patches/0003-callback-graph-identity.patch": "da16593d9fee8a5853098c3ef58e3c33c8d0a52c3ffdced2cd35df4c97a656c3",
+    "include/juqe.h": "ca3531b2d9cfe2bad23f4f45bdb70bda0d5d2ef2fbca3cd86053447e990f4a30",
+    "rust-toolchain.toml": "d13306be0ecda81ce779baa290ffb417380d525928477f16200884b5169cca33",
+    "scripts/build-engine.py": "bec964ccbe8b5e1933e7043e7d7bbeae698a43febccb4a30686f89fb571b835a",
+    "scripts/check-cabi.py": "a99a1daf695d69b92cefb8466c2602486d199606f8c66b97526c0bf76b875ee7",
+    "scripts/check-server.py": "7a4fca78098007bccd3ce523904ee76a5550ae19c52c5a2adec1b474e2780ac4",
+    "scripts/juqe_build/__init__.py": "5a05f10b634b17181cfeac64b7c03368c002942b966254fc53b0245995c750e1",
+    "scripts/juqe_build/build.py": "9b37abc45db930bb24978608d0551296e09353ea3cf4bdf86254536ff246224b",
+    "scripts/juqe_build/config.py": "d482d8719fc5cc7ecd994b87cb0af44450d04deadb9fd4c2f431559fd3b95060",
+    "scripts/juqe_build/manifest.py": "a1e439d5a5937305946953096c8b9f61c82b357bb30eed9e0a2ecf977c0641c0",
+    "scripts/juqe_build/source.py": "d79048865db373c042ffb0ad2ae9547c5e410cdbfd82b4ff487147826c7f4c49",
+    "scripts/serve.py": "ac31e7d76d5b1f330e21b83f93cee335bbf4ac22113edd4fafac738e3529e2cb"
+  },
+  "artifacts_sha256": {
+    "cmake/bin/libggml-base.so": "ea18e1482c69b821f3683674a4c5d5fa0ad1366159935b7103074c798b7e2718",
+    "cmake/bin/libggml-base.so.0": "ea18e1482c69b821f3683674a4c5d5fa0ad1366159935b7103074c798b7e2718",
+    "cmake/bin/libggml-base.so.0.25.1": "ea18e1482c69b821f3683674a4c5d5fa0ad1366159935b7103074c798b7e2718",
+    "cmake/bin/libggml-cpu.so": "a5eb203945ecef3b8ec63b6ad521b47c0cee555e322784772efa3379c623add9",
+    "cmake/bin/libggml-cpu.so.0": "a5eb203945ecef3b8ec63b6ad521b47c0cee555e322784772efa3379c623add9",
+    "cmake/bin/libggml-cpu.so.0.25.1": "a5eb203945ecef3b8ec63b6ad521b47c0cee555e322784772efa3379c623add9",
+    "cmake/bin/libggml-cuda.so": "0648705634c13948c2260e9ac7714cb4c33f86b4140585d2d154cf26bc3307f2",
+    "cmake/bin/libggml-cuda.so.0": "0648705634c13948c2260e9ac7714cb4c33f86b4140585d2d154cf26bc3307f2",
+    "cmake/bin/libggml-cuda.so.0.25.1": "0648705634c13948c2260e9ac7714cb4c33f86b4140585d2d154cf26bc3307f2",
+    "cmake/bin/libggml.so": "890cd891329d30d743fc0fda4a02f73296b1d7539a0dadb2c162b8c261c7e45a",
+    "cmake/bin/libggml.so.0": "890cd891329d30d743fc0fda4a02f73296b1d7539a0dadb2c162b8c261c7e45a",
+    "cmake/bin/libggml.so.0.25.1": "890cd891329d30d743fc0fda4a02f73296b1d7539a0dadb2c162b8c261c7e45a",
+    "cmake/bin/libllama-common.so": "1c9692d12ad59f317f4276b7eeb7edc6714e8dab1ba6f64f7932ac84a6bb25bc",
+    "cmake/bin/libllama-common.so.0": "1c9692d12ad59f317f4276b7eeb7edc6714e8dab1ba6f64f7932ac84a6bb25bc",
+    "cmake/bin/libllama-common.so.0.5.0": "1c9692d12ad59f317f4276b7eeb7edc6714e8dab1ba6f64f7932ac84a6bb25bc",
+    "cmake/bin/libllama-server-impl.so": "c9be28eb2ef9fbe53ac332a7a40ee221f1f1ad343107d3a5ebf07a570ee220ac",
+    "cmake/bin/libllama.so": "6788064f7ef8a5fbcdcbf52b9951abcc5d1b6bddffb4e2280f282cfd934cc2f0",
+    "cmake/bin/libllama.so.0": "6788064f7ef8a5fbcdcbf52b9951abcc5d1b6bddffb4e2280f282cfd934cc2f0",
+    "cmake/bin/libllama.so.0.5.0": "6788064f7ef8a5fbcdcbf52b9951abcc5d1b6bddffb4e2280f282cfd934cc2f0",
+    "cmake/bin/libmtmd.so": "21cbc36f77696076ae78b57b23f641af71f435b346b83bea005be4d8ac561570",
+    "cmake/bin/libmtmd.so.0": "21cbc36f77696076ae78b57b23f641af71f435b346b83bea005be4d8ac561570",
+    "cmake/bin/libmtmd.so.0.5.0": "21cbc36f77696076ae78b57b23f641af71f435b346b83bea005be4d8ac561570",
+    "cmake/bin/llama-server": "21fec5eef6766570f49538cfce76ac3e3054119368fa8c1bf6ba844924f766f4"
+  },
+  "build_inputs_sha256": {
+    "rust_static_library": "e54d98c3caab555ed90739af6bd50cb17cd0f3ad91c218458071fb40720505a1",
+    "cmake_cache": "3d3e01eebdc5166b1b7a250c146e2c70eba25bf09f9557808d45f756522907ff",
+    "compile_commands": "e6259d903cddfc7ff94207ad71862e2fb7aa715aca3d8912138f7334ed1483c7"
+  },
+  "test_sources_sha256": {
+    "tests/test_engine_source.py": "8bd26f4d42e101fe8074217f426c324622a6952e0930d50e928e29f43042e42e",
+    "tests/test_launcher.py": "dd6a28ab31f3b3bca70a96448b0330474dd7fa892c9544a9633ee7bdf9c33975"
+  },
+  "checks": {
+    "source_preparation": [
+      "macOS",
+      "Linux"
+    ],
+    "python_tests_macos": 9,
+    "python_tests_linux": 9,
+    "generation_records": 64,
+    "matching_generation_records": true,
+    "concurrent_chat_responses": [
+      "Paris",
+      "4"
+    ],
+    "server_preload": true,
+    "live_verification": true,
+    "build_rejected_while_serving": true,
+    "server_clean_shutdown": true,
+    "previous_service_restored_healthy": true,
+    "gpu_validation_exit_code": 0,
+    "incremental_rebuild_artifacts_unchanged": true
+  },
+  "inference_records_sha256": {
+    "reference": "dcdfb7471c5984d812a9440d3c3d7130c8c022d8d03ee819c915c098964f7658",
+    "pinned_build": "dcdfb7471c5984d812a9440d3c3d7130c8c022d8d03ee819c915c098964f7658"
+  },
+  "raw_logs_sha256": {
+    "baseline.log": "50aff6c61c7dc8b96d698ba069267c8383c4cc33229f00df097fb1a959aea59f",
+    "rust.log": "b8ce58303d4a9912eabb13e05ecf3b07dde17a5974fb42aa75efbe6643fd8f8f",
+    "server.log": "6be711fdc3f517c879303e20bbb735c0adcfd58d2559b6f828c03526fc1a64a6",
+    "live-verification.log": "f1fcbab2e23e75ed43f695068ea2099e7ec90a4e08c142610df3b232ba52d923",
+    "active-lock.log": "3c1ec9f02f726d3111d9b4434d009c8fee61db5ec37571f358a9898832d81769"
+  },
+  "review_scope_note": "CUDA Toolkit selection and its regression test were added after review and validated in the corrected build. Evidence and final status were recorded afterward.",
+  "github_actions_execution": "not_yet_observed",
+  "coderabbit_reviews": [
+    {
+      "raw_log_sha256": "09620d69b5d82c6740cfc3753a613244db567b8fff2f245d9ff4a4a1ba3be6c6",
+      "status": "review_completed",
+      "gate": {
+        "threshold": "major",
+        "status": "passed",
+        "blockingFindings": 0
+      },
+      "findings": [
+        {
+          "file": "scripts/build-engine.py",
+          "severity": "minor",
+          "title": "Use a shared lock for `--verify-only`.",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        },
+        {
+          "file": "docs/engine-build.md",
+          "severity": "trivial",
+          "title": "State the validation status of the pinned-source build.",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        }
+      ]
+    },
+    {
+      "raw_log_sha256": "603a39702bc9430fc3855ebd13bbd7e63380ae3260b54aa244b6cad7c6ece988",
+      "status": "review_completed",
+      "gate": {
+        "threshold": "major",
+        "status": "passed",
+        "blockingFindings": 0
+      },
+      "findings": [
+        {
+          "file": "scripts/serve.py",
+          "severity": "minor",
+          "title": "Acquire the build lock before the first artifact verification.",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        },
+        {
+          "file": "docs/architecture.md",
+          "severity": "minor",
+          "title": "Use the full path for the `serve.py` entry.",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        },
+        {
+          "file": "tests/test_launcher.py",
+          "severity": "trivial",
+          "title": "Assert the exit code and message in `testactivebuildpreventslaunch`.",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        },
+        {
+          "file": "docs/roadmap.md",
+          "severity": "minor",
+          "title": "Do not list the pinned source build as \"Delivered\".",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        },
+        {
+          "file": "engine/adapter.cmake",
+          "severity": "trivial",
+          "title": "Make `-Werror` on adapter sources opt-in.",
+          "resolution": "Retained scoped adapter warnings-as-errors; documented project policy"
+        },
+        {
+          "file": "docs/engine-build.md",
+          "severity": "minor",
+          "title": "Replace the time-bound status with a stable validation statement.",
+          "resolution": "Addressed; relevant checks or final validation completed"
+        }
+      ]
+    }
+  ]
+}
