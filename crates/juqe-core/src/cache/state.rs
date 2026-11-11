@@ -48,25 +48,43 @@ impl Cache {
     /// [`CacheError::Busy`] when every slot is protected, or
     /// [`CacheError::SequenceExhausted`] before an access counter can wrap.
     pub fn request(&mut self, expert: usize) -> Result<Request, CacheError> {
+        if let Some(lease) = self.ready(expert)? {
+            return Ok(Request::Ready(lease));
+        }
+        if self.expert_slots[expert].is_some() {
+            return Ok(Request::Pending);
+        }
+        let slot_id = self.victim().ok_or(CacheError::Busy)?;
+        self.reserve(slot_id, expert).map(Request::Load)
+    }
+
+    /// Lease a resident expert without reserving a missing one.
+    ///
+    /// Use this to protect all resident members of a batch before reserving its
+    /// missing experts. Loading and absent experts return `None`.
+    ///
+    /// # Errors
+    /// Returns an invalid-expert or exhausted-sequence error without reserving a slot.
+    pub fn ready(&mut self, expert: usize) -> Result<Option<Lease>, CacheError> {
         if expert >= self.expert_slots.len() {
             return Err(CacheError::InvalidExpert {
                 expert,
                 experts: self.expert_slots.len(),
             });
         }
-        if let Some(slot_id) = self.expert_slots[expert] {
-            if matches!(self.slots[slot_id].state, SlotState::Loading { .. }) {
-                return Ok(Request::Pending);
-            }
-            let now = self.tick()?;
-            let slot = &mut self.slots[slot_id];
-            if let SlotState::Ready { pin, .. } = &slot.state {
-                slot.last_used = now;
-                return Ok(Request::Ready(Lease::new(slot_id, pin)));
-            }
+        let Some(slot_id) = self.expert_slots[expert] else {
+            return Ok(None);
+        };
+        if !matches!(self.slots[slot_id].state, SlotState::Ready { .. }) {
+            return Ok(None);
         }
-        let slot_id = self.victim().ok_or(CacheError::Busy)?;
-        self.reserve(slot_id, expert).map(Request::Load)
+        let now = self.tick()?;
+        let slot = &mut self.slots[slot_id];
+        slot.last_used = now;
+        match &slot.state {
+            SlotState::Ready { pin, .. } => Ok(Some(Lease::new(slot_id, pin))),
+            _ => Ok(None),
+        }
     }
 
     /// Publish a successful complete write and lease its slot to the caller.

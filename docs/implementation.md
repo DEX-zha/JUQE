@@ -42,6 +42,6 @@ Do not describe the port as complete while its engine integration is missing.
 - [x] Core cleanup
 - [x] I/O cleanup
 - [x] CLI cleanup and source map
-- [ ] Operational runtime
+- [x] Operational runtime (engine integration remains below)
 - [ ] Engine integration
 - [ ] Complete inference validation and operating guide

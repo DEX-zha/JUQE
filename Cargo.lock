@@ -23,6 +23,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "juqe-runtime"
+version = "0.1.0"
+dependencies = [
+ "juqe-core",
+ "juqe-io",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.191"
 source = "registry+https://github.com/rust-lang/crates.io-index"

@@ -8,9 +8,8 @@ remains the reference for outputs and compute time. Prototype performance result
 do not describe the new Rust implementation.
 
 `juqe-core` validates metadata and manages per-layer cache state. `juqe-io` performs
-synchronous reads into three exclusively borrowed destinations. The planned
-scheduler will own buffers and tickets, submit reads, and publish slots only after
-success. GPU consumers must retain their leases until their kernels complete.
+synchronous reads into three exclusively borrowed destinations. `juqe-runtime` owns load tickets, submits reads through a bounded queue, and
+publishes slots only after success. Its storage backend owns destination buffers. GPU consumers must retain their leases until their kernels complete.
 
 ## Invariants
 
@@ -23,8 +22,8 @@ success. GPU consumers must retain their leases until their kernels complete.
    success or failure notifications and stale tickets are rejected. Dropping a
    ticket without an I/O completion leaves the slot unavailable. No `Drop`
    implementation assumes that the writer has finished.
-5. A partial load may have written bytes but must not be published. The scheduler
-   must call `complete` after `Ok`, or `fail` after the writer returns.
+5. A partial load may have written bytes but must not be published. The runtime
+   calls `complete` after `Ok`, or `fail` after the writer returns.
 6. LRU eviction applies only to ready, unleased slots. Saturation returns `Busy`
    so the caller can apply backpressure without allocating or forcing eviction.
 
@@ -91,3 +90,6 @@ quantization, context, and memory budget constant.
 Module roots expose the public API. Cache and format tests are separate integration
 tests, so they exercise public contracts without depending on internal file layout.
 The [implementation plan](implementation.md) tracks the operational rewrite.
+
+See [runtime ownership](runtime.md) for batch preparation, worker shutdown, and
+the storage integration contract.

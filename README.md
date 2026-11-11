@@ -18,8 +18,8 @@ queue wait. This target is not guaranteed for all workloads.
 - A CLI to inspect packs and verify all three matrices of an expert.
 - Invariant tests, Linux and macOS CI configuration, and CodeRabbit review rules.
 
-The current Rust buffers use ordinary host memory. CUDA pinned pools, the
-scheduler, and the llama.cpp adapter are planned. This version preserves exact
+The current Rust buffers use ordinary host memory. The bounded scheduler is implemented; CUDA pinned pools and the llama.cpp adapter
+are the next integration step. This version preserves exact
 weights; pruning and learned prediction are not enabled.
 
 ## Get started
@@ -55,6 +55,7 @@ not model throughput. These commands do not control GPU services.
 | --- | --- |
 | `juqe-core` | Validated metadata and cache states, without unsafe code or system access |
 | `juqe-io` | Aligned buffers and exact reads at the allocation and system-call boundary |
+| `juqe-runtime` | Bounded parallel loading, batch leases, and worker shutdown |
 | `juqe-cli` | Inspection and verification of existing packs |
 
 ## Documentation
@@ -62,6 +63,8 @@ not model throughput. These commands do not control GPU services.
 - [Architecture and invariants](docs/architecture.md)
 - [Prototype evidence](docs/evidence.md)
 - [Validation results](docs/validation.md)
+- [Runtime ownership](docs/runtime.md)
+- [Implementation progress](docs/implementation.md)
 - [Migration roadmap](docs/roadmap.md)
 
 ## Contribute and get help
