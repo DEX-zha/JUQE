@@ -1,0 +1,193 @@
+{
+  "date": "2026-11-11",
+  "date_timezone": "Europe/Paris",
+  "scope": "Operational exact-routing port using the existing JUQE-patched engine; no research options enabled",
+  "platform": "Linux ARM64, NVIDIA GB10",
+  "model": "Qwen3.8-Flash-Next UD-IQ4_XS",
+  "config": {
+    "cache_fraction": 0.5,
+    "workers": 4,
+    "microbatch": 8,
+    "context": 4096,
+    "expert_count": 512,
+    "server_slots": 2,
+    "server_preload": true
+  },
+  "checks": {
+    "macos_rust_tests": 23,
+    "linux_rust_tests": 24,
+    "linux_direct_required": true,
+    "native_c_abi": [
+      "macOS",
+      "Linux"
+    ],
+    "launcher_tests": 2,
+    "generation_steps": 64,
+    "exact_generation_records_match": true,
+    "concurrent_chat_responses": [
+      "Paris",
+      "4"
+    ],
+    "server_clean_shutdown": true,
+    "gpu_validation_exit_code": 0,
+    "previous_service_restored_healthy": true
+  },
+  "inference_records_sha256": {
+    "cpp": "dcdfb7471c5984d812a9440d3c3d7130c8c022d8d03ee819c915c098964f7658",
+    "rust": "dcdfb7471c5984d812a9440d3c3d7130c8c022d8d03ee819c915c098964f7658"
+  },
+  "build_libraries_sha256": {
+    "original_library_sha256": "4589c19006b919cb70997b0c37b42578cc45e48830e3ca117431bdd53e5b6095",
+    "adapter_library_sha256": "504e7ebf9bb3a5db667ff40e440e6dba3e729b3dbc0dbbb741ea955a36fbea65",
+    "rust_library_sha256": "e54d98c3caab555ed90739af6bd50cb17cd0f3ad91c218458071fb40720505a1"
+  },
+  "source_sha256": {
+    "Cargo.lock": "7c5fecb428b788ead1c04147d4bedbda6e174ff83fde516aa88e05b0ee60e8a2",
+    "Cargo.toml": "489fcee260bfcc7538b5aeafe21f45fd5f78f48b4cf0898c624889c0fdaa0ecd",
+    "adapters/llama/attach.cpp": "95bef575bc41889700f5f840086fdcd3611ba02e58695d82d692e6526ea3ffeb",
+    "adapters/llama/bridge.h": "b61993e2c98cf0c8e86d18611b7bd4a1f8ec40f5a4001c2f9945145ef6fc3272",
+    "adapters/llama/callback.cpp": "79fd9a93ac344c100ab376d1ef24575e7dac569ba06b003a1ddfe6df50e45265",
+    "adapters/llama/config.cpp": "25e4b5f3267aba0082410661b873079f61c348bad45e804ae7b3c647f1f1984e",
+    "adapters/llama/config.h": "15f0ed26c53ac5340d351a8b7e3abb832bbcf8cb181dc399120d01c613bf2d2b",
+    "adapters/llama/juqe-offload.h": "799bfb1cf7aa928a518f4025e35f5a8b3d4ec3426a8d0bbc4062ecd2ea5769b5",
+    "adapters/llama/layout.cpp": "7fc942e2d2c257fc32c34f04650ba1fbf8c8b392025fe486941d15174116f357",
+    "adapters/llama/pools.cpp": "ad0c8642a78d9f840f02f7617775ac162ab25e969234c8553f37932f50fabdb6",
+    "adapters/llama/routing.cpp": "e2afdf35363cab276ed6eff20e992ecd9c0ee84cd6479c4b69bce6d7da50f4b3",
+    "adapters/llama/state.h": "115d9858ffa66785b29fa8b14387405039f6e510f5ad6c54b442c861fef90603",
+    "crates/juqe-cli/Cargo.toml": "0a49a65b674a2db0cca69ed3e75d6b9cbd91b684fc427a689fc49bef0b8c4831",
+    "crates/juqe-cli/src/args.rs": "ee5b3a4d09dbb2cb27cc69f63801638a6ae4c21357d09b3b142f5a8669b05ba8",
+    "crates/juqe-cli/src/commands/inspect.rs": "27e2bab46ee17b9d1a23d4fc0b55a8d27c0a0996a542807e7d0cc39e338c24ba",
+    "crates/juqe-cli/src/commands/mod.rs": "1b4b401748a32bfb0cc189e42a86fa5eb53681900729d5db2b101e80c4600440",
+    "crates/juqe-cli/src/commands/verify.rs": "7fb1d6756c3f7596ff0fcfa2e00a6130c43e9ae0f027a794565b603419ff7e99",
+    "crates/juqe-cli/src/main.rs": "e3d035600fdf4449cbabd61d531a76532b5eaee83179c31ffbe4a0211ecb64ab",
+    "crates/juqe-cli/src/output.rs": "eca2857425f09374b40987d64f4c8a18943d0e3aab3348b2d853e169163d4f0b",
+    "crates/juqe-cli/tests/command.rs": "5ea0fcfd844da79484ecf958a2ac021c985380fb4de94969f1995bd1952bc237",
+    "crates/juqe-core/Cargo.toml": "47d92fcccb8d431df6f4870cae101ceb1383b28dcf01b56b1af385556e5359b5",
+    "crates/juqe-core/src/cache/error.rs": "010a6716af3b7319b3f2fede68751e88275db33e7b0e22025b28b18121c4b506",
+    "crates/juqe-core/src/cache/handles.rs": "26586be6f8313cb98f948a59b900ba265dfc92772ae2223ac243e7964b448b6d",
+    "crates/juqe-core/src/cache/mod.rs": "ccccbfa6582709f26f9ee498776cd5758db837911c5223729fee9d284c25b31a",
+    "crates/juqe-core/src/cache/slot.rs": "0c7875eda8f9fd2aecd6f9a7821337d5ab786d62463097c70cc0a4bc7ec54e66",
+    "crates/juqe-core/src/cache/state.rs": "3bce78537bed6b382fb8b1cf32ceecb945f28d9390a5acab8bac635efff52530",
+    "crates/juqe-core/src/format/error.rs": "448c8a0ab90a0b4925343ad166258ab718c2dd029421e06f9f237c8153401bbe",
+    "crates/juqe-core/src/format/index.rs": "140ec7d6706a06024ddf506bf864f13b7279b62e277734aa5a7abccf846f5519",
+    "crates/juqe-core/src/format/layout.rs": "752c7e30822ed173168ba0520f566623a53c9e76158022acd7e206de16b48ee8",
+    "crates/juqe-core/src/format/mod.rs": "d38eba9f56692c606dad3048af457546e44752d1f44fd1bffdc5f42ea758a0ec",
+    "crates/juqe-core/src/format/parser.rs": "dd8f5cfeafca063217f288c8822cba428ef682f8a296030f7db6d797d9188dc1",
+    "crates/juqe-core/src/lib.rs": "56d84a65e4dd199a35440f2aae1b10946e64961534454ede54586bfb701c9d65",
+    "crates/juqe-core/tests/cache.rs": "31f43c9aeddc2000ce438267eae331defbc395ead05f0b55ac585367122133c6",
+    "crates/juqe-core/tests/format.rs": "65f6ee5230286bd8ef5e142afc3127fc23d61434ef2c8fe2a784e28e177023fe",
+    "crates/juqe-ffi/Cargo.toml": "e6720143ab2479d44891edb098e18232f7e3c95f1af3367749b7d0276d04dad7",
+    "crates/juqe-ffi/src/boundary.rs": "5195a090fa6b8e6812abbfdbb5fee9e475662a7825a42e9669117c945db17fb5",
+    "crates/juqe-ffi/src/lib.rs": "5d3ba396440f2b68e2880d6871f734b63e54110d6646aefdd4739e164fccb76d",
+    "crates/juqe-ffi/src/memory/mod.rs": "66d3e282b3af9c4f13a170080aadbe22abbab540ecc66915c1e3cd3276e897e8",
+    "crates/juqe-ffi/src/memory/region.rs": "77e8430dc1aa04c2e980916597b2aaab624864dc14fe558ba956edc2d1b1ec02",
+    "crates/juqe-ffi/src/pack.rs": "ffc478647aa6b1ebce94aebc552014c46a052feae6624c88e66d18f99d7b2f07",
+    "crates/juqe-ffi/src/runtime/batch.rs": "c4bfea853a698f3b308e763505c72d561a50b162354bfdccf00cef485b441860",
+    "crates/juqe-ffi/src/runtime/create.rs": "b50b711c7a5d70250183f80aa4b82ad6538a5e8c6607d4b27883bceb36ec7e1d",
+    "crates/juqe-ffi/src/runtime/mod.rs": "4d53a1dce0e9345c2522e974c75464165ea360b0cca1cc846527eb249c86f8c0",
+    "crates/juqe-ffi/src/types.rs": "e6b49b3bb10c964aa80b1706d8717e97f5df98c60fafa18778c981b047769401",
+    "crates/juqe-io/Cargo.toml": "aed9a98358be97a0cfe00e12d63a9564fd6f60b55f6f2a82c8eabe276e6a5035",
+    "crates/juqe-io/src/buffer.rs": "84575f4c3f6088a2a3d88a35aa561928e0feb702c3f71c7bb897ac8d4180e43b",
+    "crates/juqe-io/src/index.rs": "8c837fb388c1d268ab4c7ec102d8d4bc8f9d00575b957b62bb0031d3a2bfada1",
+    "crates/juqe-io/src/lib.rs": "6dc54691a0e986b27e518acbdacd4be7a52ba50cfd4780af5f580c0c8ff88a34",
+    "crates/juqe-io/src/linux/alignment.rs": "71f3618b2a2b6e46a6f65836637bc41222f5781d895aeb28556bfa8daf8c1e65",
+    "crates/juqe-io/src/linux/mod.rs": "fe1562bbb8f5fa364bae3c109de14fc8f319747a8456bd769ac1a3e59b5b871e",
+    "crates/juqe-io/src/linux/scatter.rs": "2cc824aa2612ffcb7c6b72df7f11918e2ad0e6115df2c3dbf8d443746fb13d93",
+    "crates/juqe-io/src/positional.rs": "1ae58af85451e8f33a53de4ce08ae7afd797fc8d5709797ad5655cc39d6aabb9",
+    "crates/juqe-io/src/reader.rs": "cf05cbdc243d14f828a0705eea83b26082dba83270b008aa6b409a96b433a3ff",
+    "crates/juqe-io/src/report.rs": "1c71cd98043e153a8be2d0c05e32c8447cfaacb078f1a3bce114d9d8be2a9473",
+    "crates/juqe-io/src/source.rs": "edd91c02156a59b28f9d43d05616b019a9eb4997721f1b225eb1dbf44d676d6f",
+    "crates/juqe-io/tests/reads.rs": "45ad12cc89c122ad16e0a4a3cb13e299ef1fc9b88529c3cd29b623ba40e6ede9",
+    "crates/juqe-runtime/Cargo.toml": "9eddf74d836a1d20645d654c708b49482d876e100f5328d82aa67bd236a8a539",
+    "crates/juqe-runtime/src/batch.rs": "81a14dad4d02e22e95e4095d5a68b96236243a0857622b5916c4f295f7a62e24",
+    "crates/juqe-runtime/src/config.rs": "99c47757714f737fcb1ffe83975df52fccecef7af87474d5a5c0aadc0ce01a58",
+    "crates/juqe-runtime/src/dispatch.rs": "519dd5384f1c42ae2eceb720b4318ae888a4f581995b38bae8886a7f6e8411c8",
+    "crates/juqe-runtime/src/error.rs": "594e48db0e06b17c8e3b727fb48172c8af9c266e5102b2edebad47cbf5e4ae9e",
+    "crates/juqe-runtime/src/lib.rs": "ff689e8f42168d9937f197de9c35fe1c31212ffd2978003e496f6e33eb8308ea",
+    "crates/juqe-runtime/src/pool.rs": "9297ac950fd230cb23df74518ba476c57d4b433e688fccf6ea73892e3e1b5bc3",
+    "crates/juqe-runtime/src/runtime.rs": "7de1de974e7aefedd78d2df103040a2451f5dd33cf640d9c8c1a6b015c4783d1",
+    "crates/juqe-runtime/src/storage.rs": "5ce9fcf99b04df7dca38d96dec2b426fe642d3d3e54b47ace235c91fb2e23125",
+    "crates/juqe-runtime/src/worker.rs": "3d2d7ca85becc61fc44910a23be2a6f6281b785de8b8385e2f017d0c39a00d80",
+    "crates/juqe-runtime/tests/loading.rs": "0c36062950c0f8a6625f22cecb6f0fcabfb970ad5a8b2882bc3e0badfbdbd39d",
+    "crates/juqe-runtime/tests/support/mod.rs": "9209408143dd8fb0d9dbb9c18d1dfe54ed9873f71d940e94cc5938feb2769a7d",
+    "crates/juqe-runtime/tests/workers.rs": "ef0e84c37864c9704755126e4d88b1ca56ab9a9b1dd63c2727581bbee365a1f3",
+    "include/juqe.h": "ca3531b2d9cfe2bad23f4f45bdb70bda0d5d2ef2fbca3cd86053447e990f4a30",
+    "rust-toolchain.toml": "d13306be0ecda81ce779baa290ffb417380d525928477f16200884b5169cca33",
+    "scripts/build-engine.py": "a6efdfe9ad64655197cbab6bbf5920e1b50d5b70eac0eba576569d5beea3d9b1",
+    "scripts/check-cabi.py": "a99a1daf695d69b92cefb8466c2602486d199606f8c66b97526c0bf76b875ee7",
+    "scripts/check-server.py": "7a4fca78098007bccd3ce523904ee76a5550ae19c52c5a2adec1b474e2780ac4",
+    "scripts/serve.py": "6f61a459b145be19ca360bf3597c980fb7498353c8fc6f25dff57780621a0006"
+  },
+  "limitations": [
+    "Existing patched engine build required",
+    "Short functional validation, not a sustained service test",
+    "No inference speedup or 10 ms bound established",
+    "Weight provenance must be verified by the operator",
+    "Inference I/O failures stop the process under the current engine callback contract"
+  ],
+  "github_actions_execution": "not_yet_observed",
+  "raw_logs_sha256": {
+    "cpp_driver": "95f18a493603b3f0e279d02ad993396d7c84bc3416acda8d1fc6b91bae01f858",
+    "rust_driver": "01aed4672e65d35948f288097dd7be3685ab8bdc062f8fb2e168118c12d312ca",
+    "server": "9b9aaaff6afb08f084e5353af6ec075c36e2adbbde84a2e502bfc4327f7a05a8"
+  },
+  "coderabbit_reviews": [
+    {
+      "raw_log_sha256": "f7f9480125c680140ca2f82c4d3d1d6ce9e307032bec111bc9b621474b0cf0b7",
+      "status": "review_completed",
+      "gate": {
+        "threshold": "major",
+        "status": "passed",
+        "blockingFindings": 0
+      },
+      "findings": [
+        {
+          "severity": "minor",
+          "file": "docs/runtime.md",
+          "title": "Correct the integration status. The adapter exists in this PR.",
+          "resolution": "Addressed and affected checks passed"
+        },
+        {
+          "severity": "minor",
+          "file": "README.md",
+          "title": "Update the integration status. This PR adds the llama.cpp adapter.",
+          "resolution": "Addressed and affected checks passed"
+        },
+        {
+          "severity": "minor",
+          "file": "scripts/serve.py",
+          "title": "Keep the inherited `LDLIBRARYPATH` entries.",
+          "resolution": "Addressed and affected checks passed"
+        },
+        {
+          "severity": "minor",
+          "file": "docs/architecture.md",
+          "title": "Add the runtime, FFI, and adapter modules to the source map.",
+          "resolution": "Addressed and affected checks passed"
+        }
+      ]
+    },
+    {
+      "raw_log_sha256": "6f2d3d777663f5f9b2b74ea26f70994b0aa35a70363f6cd23c74993ce0a9bffc",
+      "status": "review_completed",
+      "gate": {
+        "threshold": "major",
+        "status": "passed",
+        "blockingFindings": 0
+      },
+      "findings": [
+        {
+          "severity": "trivial",
+          "file": "tests/cabi.c",
+          "title": "Move the API calls out of `assert` expressions.",
+          "resolution": "Addressed and affected checks passed"
+        }
+      ]
+    }
+  ],
+  "review_scope_note": "Review records were added after review. The macOS fixture path normalization and NDEBUG test correction were validated separately; the GPU-tested runtime sources did not change.",
+  "test_sources_sha256": {
+    "tests/cabi.c": "494645cea09ec7ff5fe2788835735e838a182685decd5544bbff93b2afa52a58",
+    "tests/test_launcher.py": "acb0ba5fa36ffb016e8e498e88778831a81be65f07ed51023c16ae3af68c3015"
+  }
+}

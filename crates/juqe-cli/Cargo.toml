@@ -1,0 +1,20 @@
+[package]
+name = "juqe-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+description = "Inspect and verify existing JUQE expert packs"
+
+[[bin]]
+name = "juqe"
+path = "src/main.rs"
+
+[dependencies]
+juqe-core.workspace = true
+juqe-io.workspace = true
+
+[lints]
+workspace = true

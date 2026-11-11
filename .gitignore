@@ -1,0 +1,15 @@
+/target/
+/.local/
+/.coderabbit/
+.DS_Store
+*.gguf
+*.safetensors
+experts.bin
+*.pem
+*.key
+.env
+.env.*
+keys/
+
+/build/
+__pycache__/

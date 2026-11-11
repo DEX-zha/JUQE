@@ -1,0 +1,41 @@
+name: Rust
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: rust-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  check:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install pinned Rust toolchain
+        run: rustup toolchain install 1.99.1 --profile minimal --component rustfmt --component clippy
+      - name: Formatting
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Tests
+        run: cargo test --workspace --locked
+      - name: API documentation
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: cargo doc --workspace --no-deps --locked
+      - name: CLI smoke
+        run: cargo run --locked -p juqe-cli -- --help
+      - name: C ABI integration
+        run: python3 scripts/check-cabi.py
+      - name: C and C++ formatting
+        run: |
+          python3 -m venv .local/cpp-format
+          .local/cpp-format/bin/pip install clang-format==19.1.7
+          .local/cpp-format/bin/clang-format --dry-run --Werror adapters/llama/*.cpp adapters/llama/*.h include/juqe.h tests/cabi.c
+      - name: Launcher checks
+        run: python3 -m unittest discover -s tests -p "test_*.py"

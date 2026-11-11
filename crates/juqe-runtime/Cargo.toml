@@ -1,0 +1,16 @@
+[package]
+name = "juqe-runtime"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+description = "Bounded expert loading and lease ownership for JUQE inference"
+
+[dependencies]
+juqe-core.workspace = true
+juqe-io.workspace = true
+
+[lints]
+workspace = true
