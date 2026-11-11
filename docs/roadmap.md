@@ -1,33 +1,25 @@
-# Migration roadmap
+# Runtime roadmap
 
-## Milestone 1: Verified foundation
+## Delivered
 
-Provide the Rust workspace, development conventions, CodeRabbit review, legacy
-index import, deterministic cache, exact reads, and verification CLI. Validate
-Unix reads and Linux `O_DIRECT` on existing files without stopping the service.
-This milestone makes no inference speedup claim.
+The operational exact-routing path now includes validated pack import, cache
+ownership, bounded loading, direct scatter reads, a checked C ABI, pinned engine
+pools, and an HTTP server launcher. The CLI can inspect and verify existing packs.
+See the [implementation record](implementation.md) and [validation report](rewrite-validation.md).
 
-## Milestone 2: Scheduler and buffer ownership
+## Remaining product work
 
-Add a bounded queue, demand priority, coalesced requests for the same expert,
-preallocated scratch memory per worker, and load and wait counters. Do not cancel
-an active writer without a completion fence. Test stress, deadline overruns, and
-I/O errors. Add a versioned pack manifest and verify weight identity.
+- Distribute or reproducibly build the compatible engine dependency. The current
+  adapter uses an existing JUQE-patched engine build; arbitrary upstream builds
+  are unsupported.
+- Add a versioned pack manifest that authenticates model and weight identity.
+  Current validation checks bounds and geometry; operators supply matching packs.
+- Extend service recovery beyond the engine's current fail-stop callback contract.
+- Validate additional models, hardware, cache budgets, and sustained workloads
+  before expanding the supported configuration.
+- Measure request-to-ready latency under GPU load before claiming the 10 ms target.
+  Report queue delay and tail latency alongside total inference throughput.
 
-## Milestone 3: Engine adapter
-
-Connect Rust to the existing llama.cpp callbacks through a narrow C ABI, with CUDA
-pinned pools and leases released after GPU consumption. Keep the C++ engine
-available for exact A/B comparisons of tokens and logits. Verify shutdown, panic
-handling at the boundary, destruction after I/O, and the absence of reallocation
-while kernels are running.
-
-## Milestone 4: Evaluation and optimization
-
-Use the same memory budget, weights, and requests, with alternating repeated runs.
-Report reads, request-to-ready latency, percentiles, maxima, overall throughput,
-and quality. Test waves of 1, 2, 4, and 8 misses with GPU activity and background
-reads. Establish Dots3 results only through measurements on its actual weights.
-
-Pruning and prediction remain separate experiments. A language change or an SSD
-microbenchmark does not validate their reactivation.
+Pruning, learned prediction, and the two-wave pipeline remain outside the
+operational path. Their historical results do not establish benefits for this
+runtime. No Dots3 throughput claim follows from the Qwen integration checks.

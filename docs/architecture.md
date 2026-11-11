@@ -2,14 +2,13 @@
 
 ## Scope
 
-The first milestone provides an exact loading path that can be tested without a
-GPU. It does not rewrite attention or MoE kernels. The existing llama.cpp engine
+JUQE provides an exact expert-loading runtime with a llama.cpp engine adapter. It does not rewrite attention or MoE kernels. The existing llama.cpp engine
 remains the reference for outputs and compute time. Prototype performance results
 do not describe the new Rust implementation.
 
 `juqe-core` validates metadata and manages per-layer cache state. `juqe-io` performs
 synchronous reads into three exclusively borrowed destinations. `juqe-runtime` owns load tickets, submits reads through a bounded queue, and
-publishes slots only after success. Its storage backend owns destination buffers. GPU consumers must retain their leases until their kernels complete.
+publishes slots only after success. Its storage backend owns destination buffers. The adapter retains each batch until the scheduler synchronizes GPU consumption.
 
 ## Invariants
 
@@ -32,14 +31,15 @@ publishes slots only after success. Its storage backend owns destination buffers
 The reader imports the existing text format: a `layers experts` header followed
 by 18 integers per layer: identifier, offset, stride, and three groups of
 `type/ne0/ne1/off/bytes`. Dense placeholders have a zero stride. The ggml types
-remain opaque codes. This milestone validates byte ranges, not the compatibility
-of each quantization format with a kernel.
+remain opaque codes. The core validates byte ranges without interpreting quantization codes. The
+engine adapter additionally checks tensor shapes and ggml block sizes.
 
 Limits are 256 MiB per block, 4 MiB per index, 512 layers, and 4,096 experts. Extent
 arithmetic is checked within the `i64` offset range.
 
-A file-length check does not authenticate a model. A versioned pack manifest with
-provenance and cryptographic checksums is planned before GPU integration. Files
+File-length and tensor-geometry checks do not authenticate weight provenance.
+The operational adapter requires a matching, verified pack; automated provenance
+management remains a separate follow-up. Files
 must remain immutable during reads. Truncation is detected, but concurrent
 same-length rewrites violate the reader contract.
 
@@ -55,11 +55,10 @@ read into aligned staging memory, followed by copies. Disk errors and EOF propag
 to the caller. Interrupted reads are retried, and positive short reads continue.
 Byte counts include partial reads performed before a fallback.
 
-`AlignedBuffer` owns initialized host memory, not CUDA memory. The planned adapter
-can supply slices from pinned pools. Ownership, address stability, and completion
-fences must be established at the C ABI boundary.
+`AlignedBuffer` owns initialized host memory, not CUDA memory. The engine adapter supplies pinned pools through the checked C ABI. Ownership,
+address stability, and completion fences follow the [integration contract](ffi.md).
 
-## Measurement and integration
+## Measurement
 
 The loader accepts the submission timestamp and reports worker wait, service
 time, and request-to-ready latency separately. The CLI allocates buffers before
@@ -86,6 +85,15 @@ quantization, context, and memory budget constant.
 | CLI arguments | `crates/juqe-cli/src/args.rs` |
 | CLI operations | `crates/juqe-cli/src/commands/` |
 | CLI output | `crates/juqe-cli/src/output.rs` |
+| Runtime control and worker lifecycle | `crates/juqe-runtime/src/`; see [runtime source map](runtime.md#source-map) |
+| ABI errors and pointer access | `crates/juqe-ffi/src/boundary.rs` |
+| Foreign allocation validation and slot access | `crates/juqe-ffi/src/memory/` |
+| ABI runtime creation and batch ownership | `crates/juqe-ffi/src/runtime/` |
+| ABI layout types and public declarations | `crates/juqe-ffi/src/types.rs`, `include/juqe.h` |
+| Engine configuration and pack geometry | `adapters/llama/config.cpp`, `layout.cpp` |
+| Pinned pool allocation and setup | `adapters/llama/pools.cpp`, `attach.cpp` |
+| Synchronized routing callbacks | `adapters/llama/routing.cpp`, `callback.cpp` |
+| Build and service launch | `scripts/build-engine.py`, `serve.py` |
 
 Module roots expose the public API. Cache and format tests are separate integration
 tests, so they exercise public contracts without depending on internal file layout.

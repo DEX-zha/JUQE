@@ -3,7 +3,8 @@
 Rust 1.99.1, edition 2024, MIT. The toolchain and Cargo.lock are checked in.
 Use American English for all repository content: documentation, code comments,
 API names, CLI messages, review instructions, and commit messages. Use rustfmt and
-Clippy for Rust formatting and diagnostics.
+Clippy for Rust formatting and diagnostics. Format C and C++ with clang-format
+19.1.7 and the checked-in Microsoft-based `.clang-format` configuration.
 
 ## Documentation style
 
@@ -31,8 +32,8 @@ These are project conventions informed by the guides, not a claim of certificati
   actual path and fallback reason. An index validates bounds, not model identity.
 - Prefer a minimal dependency set. Add async runtimes or GPU bindings only for a
   concrete integration, with resource limits and an explicit ownership contract.
-- The current cache is a metadata state machine, not a scheduler or GPU lifetime
-  manager. Preserve this boundary until the backend integration is tested.
+- The core cache manages metadata. The runtime owns scheduling, and the adapter
+  enforces GPU completion before releasing leases. Preserve these boundaries.
 
 ## Module structure
 
@@ -84,6 +85,15 @@ advisory evidence: assess each finding, test fixes, and record unresolved defect
 Never automatically apply suggestions or describe an unavailable review as passed.
 The GitHub CodeRabbit app must be installed on the repository for automatic PR
 reviews; the local CLI login alone does not install that app.
+
+## C and C++ checks
+
+```sh
+python3 -m venv .local/cpp-format
+.local/cpp-format/bin/pip install clang-format==19.1.7
+.local/cpp-format/bin/clang-format --dry-run --Werror adapters/llama/*.cpp adapters/llama/*.h include/juqe.h tests/cabi.c
+python3 scripts/check-cabi.py
+```
 
 ## Performance evidence
 

@@ -32,3 +32,10 @@ jobs:
         run: cargo run --locked -p juqe-cli -- --help
       - name: C ABI integration
         run: python3 scripts/check-cabi.py
+      - name: C and C++ formatting
+        run: |
+          python3 -m venv .local/cpp-format
+          .local/cpp-format/bin/pip install clang-format==19.1.7
+          .local/cpp-format/bin/clang-format --dry-run --Werror adapters/llama/*.cpp adapters/llama/*.h include/juqe.h tests/cabi.c
+      - name: Launcher checks
+        run: python3 -m unittest discover -s tests -p "test_*.py"

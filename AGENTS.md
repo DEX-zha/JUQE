@@ -2,7 +2,7 @@
 
 Read CONTRIBUTING.md and docs/architecture.md before changing runtime behavior.
 
-- This repository is the Rust foundation. Historical C++/Python experiments live
+- This repository contains the Rust runtime and its engine adapter. Historical C++/Python experiments live
   outside it; never bulk-import model weights, credentials, or raw traces.
 - Keep juqe-core free of unsafe code and platform dependencies. Restrict unsafe
   Rust to the audited allocation/syscall boundary in juqe-io and the foreign-memory

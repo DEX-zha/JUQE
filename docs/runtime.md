@@ -49,7 +49,9 @@ engine's completion fence. Dropping a Rust batch does not synchronize a GPU.
 
 ## Integration status
 
-The runtime is implemented and tested against file-backed storage. The engine
-adapter and CUDA pool binding are the next integration step. This crate alone is
-not a model inference server. It preserves exact routing; speculative loading and
-pruning are not part of this control path.
+The llama.cpp adapter binds engine-owned CUDA host pools through `juqe-ffi` and
+uses this runtime for expert preparation. Qwen generation and concurrent HTTP
+requests have completed on GB10. See [rewrite validation](rewrite-validation.md)
+for the exact checked scope and [operations](operations.md) for build and startup.
+The runtime preserves exact routing. Speculative loading and pruning are outside
+this operational control path.

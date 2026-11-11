@@ -1,71 +1,80 @@
 # JUQE
 
-JUQE provides expert caching and loading for mixture-of-experts (MoE) models that
-exceed the available memory budget. This Rust foundation carries forward the
-invariants tested in C++ and Python prototypes on NVIDIA GB10.
+JUQE loads mixture-of-experts (MoE) weights on demand when a model exceeds the
+available memory budget. Rust manages the expert cache, parallel reads, and buffer
+ownership. A small C++ adapter connects this runtime to the existing llama.cpp
+engine and its CUDA kernels.
 
-**Status: working foundation. GPU inference integration is still in development.**
-The loading target is at most 10 ms per expert from request to readiness, including
-queue wait. This target is not guaranteed for all workloads.
+**Status: operational exact-routing integration on NVIDIA GB10.**
+The runtime has completed Qwen generation and concurrent HTTP requests against the
+existing engine. See [validation results](docs/rewrite-validation.md) for the tested
+scope. The loading target remains at most 10 ms per expert, including queue wait;
+it is not a guarantee for every workload or a per-token latency target.
 
 ## Features
 
-- Bounded, validated import of the existing `experts.idx` format.
-- A per-layer LRU cache that coalesces requests, protects loading and leased slots,
-  and publishes completed loads explicitly.
-- Positional reads on Unix and `preadv` with `O_DIRECT` on Linux, with an aligned
-  staging fallback and reporting of the actual read path.
-- A CLI to inspect packs and verify all three matrices of an expert.
-- Invariant tests, Linux and macOS CI configuration, and CodeRabbit review rules.
+- Validated import of existing expert packs with bounded metadata and allocations.
+- A per-layer LRU cache that protects loading slots and active consumer leases.
+- Bounded parallel loading with worker-private scratch and explicit shutdown.
+- Linux direct scatter reads into engine-owned pinned pools, with staging fallback.
+- An exact llama.cpp adapter with configurable cache capacity and fixed-router compaction.
+- Pack inspection, byte verification, C ABI checks, and server startup tools.
 
-The current Rust buffers use ordinary host memory. The bounded scheduler is implemented; CUDA pinned pools and the llama.cpp adapter
-are the next integration step. This version preserves exact
-weights; pruning and learned prediction are not enabled.
+The operational path preserves weights and routing. Pruning, learned prediction,
+and the experimental two-wave pipeline are not enabled or silently emulated.
 
-## Get started
+## Run the server
 
-Install [rustup](https://rust-lang.org/tools/install/), then run these commands from
-the repository root. Rustup selects the pinned toolchain automatically. The CLI
-requires Unix; direct I/O requires Linux and a compatible filesystem.
+Use the compatible JUQE-patched engine and matching pack described in the
+[operating guide](docs/operations.md). Install [rustup](https://rust-lang.org/tools/install/)
+and use Python 3.11 or later.
 
 ```sh
 cargo test --workspace --locked
-cargo run --locked -p juqe-cli -- inspect /path/to/experts.idx
-cargo run --release --locked -p juqe-cli -- verify /path/to/experts.idx /path/to/experts.bin 0 0
+python3 scripts/check-cabi.py
+python3 scripts/build-engine.py --engine /path/to/llama.cpp-juqe
+python3 scripts/serve.py \
+  --model /path/to/model-00001-of-00003.gguf \
+  --experts /path/to/experts \
+  --port 8080
 ```
 
-To verify direct I/O on Linux:
+The server binds to `127.0.0.1` by default. The launcher does not replace an existing
+service. Model weights and engine build artifacts are not included in this repository.
+
+## Inspect and verify a pack
 
 ```sh
+cargo run --locked -p juqe-cli -- inspect /path/to/experts.idx
 cargo run --release --locked -p juqe-cli -- verify /path/to/experts.idx /path/to/experts.bin 0 0 --direct
-JUQE_REQUIRE_DIRECT=1 cargo test -p juqe-io --locked
 ```
 
-Provide an existing `experts.idx` and `experts.bin` pair. Model weights are not
-included in this repository. See the [pack format](docs/architecture.md#pack-format-and-files)
-for the import contract.
-
-`verify` compares each matrix with an independent read outside the loader timer.
-It does not display or modify weights. The reported duration measures one load,
-not model throughput. These commands do not control GPU services.
+`verify` compares all three matrices with independent positional reads outside the
+loader timer. It does not display or modify weights. Its duration measures one
+load, not inference throughput. Buffered verification is available on Unix by
+omitting `--direct`; direct I/O requires Linux and a compatible filesystem.
 
 ## Project structure
 
-| Crate | Responsibility |
+| Component | Responsibility |
 | --- | --- |
-| `juqe-core` | Validated metadata and cache states, without unsafe code or system access |
-| `juqe-io` | Aligned buffers and exact reads at the allocation and system-call boundary |
-| `juqe-runtime` | Bounded parallel loading, batch leases, and worker shutdown |
-| `juqe-cli` | Inspection and verification of existing packs |
+| `juqe-core` | Validated layouts and cache states; no unsafe code or system access |
+| `juqe-io` | Aligned allocations, positional reads, and Linux system calls |
+| `juqe-runtime` | Bounded loading, batch leases, worker failures, and shutdown |
+| `juqe-ffi` | Checked C ABI and access to engine-owned memory |
+| `juqe-cli` | Pack inspection and byte verification |
+| `adapters/llama` | Tensor binding and synchronized engine callbacks |
+| `scripts` | Build, launch, and operational checks |
 
 ## Documentation
 
-- [Architecture and invariants](docs/architecture.md)
-- [Prototype evidence](docs/evidence.md)
-- [Validation results](docs/validation.md)
+- [Operating guide](docs/operations.md)
+- [Architecture and source map](docs/architecture.md)
 - [Runtime ownership](docs/runtime.md)
+- [Engine integration contract](docs/ffi.md)
+- [Rewrite validation](docs/rewrite-validation.md)
 - [Implementation progress](docs/implementation.md)
-- [Migration roadmap](docs/roadmap.md)
+- [Historical prototype evidence](docs/evidence.md)
 
 ## Contribute and get help
 

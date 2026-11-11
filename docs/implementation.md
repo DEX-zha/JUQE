@@ -42,6 +42,10 @@ Do not describe the port as complete while its engine integration is missing.
 - [x] Core cleanup
 - [x] I/O cleanup
 - [x] CLI cleanup and source map
-- [x] Operational runtime (engine integration remains below)
-- [ ] Engine integration
-- [ ] Complete inference validation and operating guide
+- [x] Operational runtime
+- [x] Engine integration
+- [x] Complete inference validation and operating guide
+
+See [rewrite validation](rewrite-validation.md) for the supported configuration and
+checks. This completes the exact-routing operational port, not the migration of
+legacy research options or a general-purpose engine distribution.
