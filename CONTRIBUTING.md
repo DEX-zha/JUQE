@@ -19,7 +19,8 @@ These are project conventions informed by the guides, not a claim of certificati
 
 ## Safety and API design
 
-- The pure core forbids unsafe code. The I/O boundary owns aligned allocations and
+- The pure core and runtime forbid unsafe code. The C ABI confines raw pointers
+  to juqe-ffi and documents engine ownership and GPU completion requirements. The I/O boundary owns aligned allocations and
   keeps buffers exclusively borrowed across synchronous kernel calls.
 - Every unsafe block or impl has a `// SAFETY:` comment identifying ownership,
   lifetime, bounds and aliasing assumptions. Do not turn warnings off globally.

@@ -1,0 +1,20 @@
+[package]
+name = "juqe-ffi"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+description = "C ABI for integrating JUQE with engine-owned expert pools"
+
+[lib]
+crate-type = ["staticlib", "rlib"]
+
+[dependencies]
+juqe-core.workspace = true
+juqe-io.workspace = true
+juqe-runtime.workspace = true
+
+[lints]
+workspace = true

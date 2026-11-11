@@ -20,6 +20,21 @@ reviews:
         Check O_DIRECT alignment, partial reads, EINTR, EOF, fallback accounting,
         concurrent positional reads and no successful publication on errors.
         Comments must use Rust doc conventions and SAFETY explanations.
+    - path: "crates/juqe-runtime/**"
+      instructions: >-
+        Check bounded submissions, all-hit protection before misses, reservation
+        rollback, completion draining after errors, worker shutdown, and storage
+        lifetime. This crate must forbid unsafe code.
+    - path: "crates/juqe-ffi/**"
+      instructions: >-
+        Audit raw pointer validity, disjoint pool ranges, uninitialized output
+        handling, engine ownership, active batch leases, and panic containment.
+        No worker may write a slot consumed by a GPU. Follow docs/ffi.md.
+    - path: "adapters/llama/**"
+      instructions: >-
+        Check tensor shapes, checked allocation extents, failure cleanup, callback
+        synchronization, and destruction order. Model pointers must be assigned
+        only after setup succeeds. Preserve exact routing and report unsupported settings.
     - path: "docs/**"
       instructions: >-
         Require American English and the documentation conventions in CONTRIBUTING.md.

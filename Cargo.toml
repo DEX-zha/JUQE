@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/juqe-core", "crates/juqe-io", "crates/juqe-cli", "crates/juqe-runtime"]
+members = ["crates/juqe-core", "crates/juqe-io", "crates/juqe-cli", "crates/juqe-runtime", "crates/juqe-ffi"]
 resolver = "3"
 
 [workspace.package]

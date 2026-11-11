@@ -30,3 +30,5 @@ jobs:
         run: cargo doc --workspace --no-deps --locked
       - name: CLI smoke
         run: cargo run --locked -p juqe-cli -- --help
+      - name: C ABI integration
+        run: python3 scripts/check-cabi.py

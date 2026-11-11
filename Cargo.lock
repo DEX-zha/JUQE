@@ -15,6 +15,15 @@ name = "juqe-core"
 version = "0.1.0"
 
 [[package]]
+name = "juqe-ffi"
+version = "0.1.0"
+dependencies = [
+ "juqe-core",
+ "juqe-io",
+ "juqe-runtime",
+]
+
+[[package]]
 name = "juqe-io"
 version = "0.1.0"
 dependencies = [
